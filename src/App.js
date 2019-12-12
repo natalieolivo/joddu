@@ -3,7 +3,7 @@ import Menu from './components/Menu';
 import './App.css';
 import styled from 'styled-components';
 
-const API_ENDPOINT = "";
+const API_ENDPOINT = 'http://localhost:3001/stylists';
 const Header = styled.header`  
   display: block;
   width: 100%;
@@ -22,6 +22,7 @@ const GridFilter = styled.section`
 
 const GridFilterBlock = styled.div`
   border-radius: 5em;
+  cursor: pointer;
 `;
 
 const Grid = styled.section`    
@@ -31,7 +32,8 @@ const Grid = styled.section`
 `;
 
 const GridBlock = styled.div`    
-  width: 252px;
+  width: 180px;
+  padding: 8px;  
 `;
 
 const GridWrapper = styled.div`  
@@ -39,23 +41,44 @@ const GridWrapper = styled.div`
 
 const GridImg = styled.img`
   border-radius: 16px;
+  width: 100%;
+`;
+
+const SearchInputWrapper = styled.section`
+  position: relative;
+  display: flex;
+  flex-direction: column;  
 `;
 
 const SearchInput = styled.input`  
   height: 2em;
-  margin: .8em;
+  margin: .4em;
   font-size: 28px;
-  border: solid 1px #ddd;  
+  padding-left: 1.8em;
+  border: solid 1px #ddd;
+  outline: 0;
+  background: #fff;
+  border-radius: 16px;
+  color: #888;
 `;
 
 const SearchBtn = styled.button`
-  margin: .8em;
+  background: #450440;
+  margin: .4em .8em;
   font-size: 28px;
   padding: .6em;
   cursor: pointer;
-  background: #ddd;
+  background: #450440;
+  color: #fff;
+  border-radius: 16px;  
   border: none;
-  outline: 0;
+  outline: 0;  
+`;
+
+const SearchInputIcon = styled.svg`
+  position: absolute;
+  top: 25px;
+  left: 25px;
 `;
 
 // Calls api to return types of hair 
@@ -76,7 +99,7 @@ const SearchBtn = styled.button`
 */
 
 function App() {
-  const [styles] = useState([{
+  const [styles, setStyles] = useState([{
     style_type: "locks",
     location: "jamaica, ny",
     zipcode: "11435",
@@ -118,11 +141,23 @@ function App() {
     url: ""
   }]);
 
+  const filterResults = () => {
+      setStyles([...Object.assign(styles,
+        styles.push({ 
+          style_type: "test",
+          image: {
+              src: "https://i.pinimg.com/236x/b6/3b/3a/b63b3a58f22b42537241414fbef74841.jpg"
+            }
+          })
+        )]);
+        console.log(styles);
+  };
+
   useEffect(() => {
   
-    // fetch(API_ENDPOINT)
-    //   .then(response => response.json())
-    //   .then(json => console.log(json));
+    fetch(API_ENDPOINT)
+      .then(response => response.json())
+      .then(json => console.log(json));
   
   }, []);
   
@@ -133,26 +168,33 @@ function App() {
       </Header>
 
       <span>Find and book a stylist:</span>
-      <SearchInput type="text" />
-      <SearchBtn>search</SearchBtn>
+      
+      <SearchInputWrapper>
+        <SearchInput type="text" placeholder="11435" />
+          <SearchInputIcon version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 16 16">
+            <path fill="#eee" d="M8 0c-2.761 0-5 2.239-5 5 0 5 5 11 5 11s5-6 5-11c0-2.761-2.239-5-5-5zM8 8.063c-1.691 0-3.063-1.371-3.063-3.063s1.371-3.063 3.063-3.063 3.063 1.371 3.063 3.063-1.371 3.063-3.063 3.063zM6.063 5c0-1.070 0.867-1.938 1.938-1.938s1.938 0.867 1.938 1.938c0 1.070-0.867 1.938-1.938 1.938s-1.938-0.867-1.938-1.938z"></path>
+          </SearchInputIcon>
+        <SearchBtn>search</SearchBtn>
+      </SearchInputWrapper>
+      
       <a href="">Stylists click here</a>
 
       <GridHeader>Hair Styles</GridHeader>
       <GridFilter>
         {
           filters.map(filter => {
-            return <GridFilterBlock>{filter.label}</GridFilterBlock>
+            return <GridFilterBlock onClick={filterResults}>{filter.label}</GridFilterBlock>
           })
         }
       </GridFilter>
 
       <Grid>
-        {styles.map(({type, image}) => {      
+        {styles.map(({style_type, image}) => {     
           return (
             <GridBlock>
               <GridWrapper>
                 <GridImg alt="" src={image.src} />
-                {type}
+                {style_type}
               </GridWrapper>
             </GridBlock>
           )

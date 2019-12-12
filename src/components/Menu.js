@@ -3,26 +3,19 @@ import styled from 'styled-components';
 import MenuButton from '../svgs/MenuButton';
 
 const Nav = styled.nav`
-    font-size: 1em;
+    background: #d5c7dd;
+    font-size: 1em;    
     display: flex;
     justify-content: center;
     align-items: center;
-`;
-
-const MenuArrowSVG = styled.svg`
-    position: absolute;
-    top: -16px;
-    left: 15px;
-    fill: #fff;
-    background: #fff;
-    z-index: 1;
 `;
 
 const List = styled.section`
     margin: 0;
     padding: 0;
     position: absolute;
-    top: 4.7em;
+    z-index: 10;
+    top: 4.5em;
     left: .4em;
     right: .4em;
     color: #000;    
@@ -56,9 +49,6 @@ function Menu() {
         if(menuVisible) {
             return (
                 <List>
-                    <MenuArrowSVG version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20">
-                        <path fill="#ddd" d="M0 15c0 0.128 0.049 0.256 0.146 0.354 0.195 0.195 0.512 0.195 0.707 0l8.646-8.646 8.646 8.646c0.195 0.195 0.512 0.195 0.707 0s0.195-0.512 0-0.707l-9-9c-0.195-0.195-0.512-0.195-0.707 0l-9 9c-0.098 0.098-0.146 0.226-0.146 0.354z"></path>
-                    </MenuArrowSVG>                    
                     <ListItems>
                         <li>Home</li>
                         <li>Appointments</li>

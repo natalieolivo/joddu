@@ -1,10 +1,15 @@
+* {
+  box-sizing: content-box;
+}
+
 .App {  
   min-height: 100vh;
   display: flex;
   flex-flow: column;  
   font-size: calc(10px + 2vmin);
   color: #000;
-  align-items: 
+  background: #fbf5f5;
+  align-items: center;
 }
 
 .App-logo {
