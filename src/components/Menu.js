@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import MenuButton from '../svgs/MenuButton';
+import {   
+    Link
+  } from 'react-router-dom';
 
 const Nav = styled.nav`
     background: #d5c7dd;
@@ -47,16 +50,17 @@ function Menu() {
 
     const menuDisplay = () => {        
         if(menuVisible) {
-            return (
+            return (    
                 <List>
                     <ListItems>
-                        <li>Home</li>
-                        <li>Appointments</li>
-                        <li>Logout</li>
+                        <li><Link to="/">Home</Link></li>
+                        <li><Link to="/stylists/profile">Stylists Profile</Link></li>
+                        <li><Link to="/appointments">Appointments</Link></li>
+                        <li><Link to="/logout">Logout</Link></li>
                     </ListItems>
                 </List>
             )
-        }    
+        }
     }
     
     const setMenuDisplay = () => {
