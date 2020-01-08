@@ -132,11 +132,17 @@ function Home() {
       };
     
       useEffect(() => {      
-        fetch(DEV_API_ENDPOINT)
+        fetch(DEV_API_ENDPOINT, {
+          method: "POST",
+          headers: {
+            'Content-type': 'json'
+          },
+          body: styles
+        })
           .then(response => response.json())
           .then(json => console.log(json));
       
-      }, []);
+      }, [styles]);
 
     return (
         <div>
