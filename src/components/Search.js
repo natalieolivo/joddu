@@ -4,7 +4,8 @@ import {
   Link,    
 } from 'react-router-dom';
   
-  const API_ENDPOINT = 'https://joddu-api.herokuapp.com/stylists/location/10029';
+  const DEV_API_ENDPOINT = 'https://joddu-api.herokuapp.com/api/stylist';
+  const LOCAL_API_ENDPOINT = 'https://localhost:3001/api/stylist';
   const GridHeader = styled.header`
   `;
   
@@ -130,9 +131,8 @@ function Home() {
             console.log(styles);
       };
     
-      useEffect(() => {
-      
-        fetch(API_ENDPOINT)
+      useEffect(() => {      
+        fetch(DEV_API_ENDPOINT)
           .then(response => response.json())
           .then(json => console.log(json));
       

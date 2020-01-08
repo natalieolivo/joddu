@@ -23,7 +23,7 @@ function App() {
     <div className="App">
       <Router>
         <Header>
-          <Menu />        
+          <Menu />      
         </Header>
         <Switch>
           <Route path="/stylists/profile"><StylistsProfile /></Route>
