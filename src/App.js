@@ -1,34 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import Menu from './components/Menu';
-import './App.css';
-import styled from 'styled-components';
-import StylistsProfile from './components/StylistsProfile';
-import Search from './components/Search';
+import React from "react";
+import Menu from "./components/Menu";
+import "./App.css";
+import styled from "styled-components";
+import StylistRegister from "./components/StylistRegister";
+import StylistProfile from "./components/StylistProfile";
+import Search from "./components/Search";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,  
-} from 'react-router-dom';
+import { Router } from "@reach/router";
 
 const Header = styled.header`
   display: block;
   width: 100%;
   border-bottom: solid 1px #ddd;
-  margin-bottom: .8em;
+  margin-bottom: 0.8em;
 `;
 
 function App() {
   return (
     <div className="App">
+      <Header>
+        <Menu />
+      </Header>
       <Router>
-        <Header>
-          <Menu />      
-        </Header>
-        <Switch>
-          <Route path="/stylists/profile"><StylistsProfile /></Route>
-          <Route path="/"><Search /></Route>
-        </Switch>        
+        <Search path="/home" />
+        <StylistRegister path="/stylists/register" />
+        <StylistProfile path="/stylists/profile/:profileId" />
       </Router>
     </div>
   );
