@@ -7,9 +7,9 @@ const LOCAL_API_ENDPOINT = "http://localhost:3001/api/stylist";
 //const DEV_API_ENDPOINT = "https://joddu-api.herokuapp.com/api/stylist";
 
 const citySelectOptions = [
-  { value: "new york", label: "New York" },
-  { value: "atlanta", label: "Atlanta" },
-  { value: "la", label: "Los Angeles" }
+  { value: "brooklyn", label: "Brooklyn" },
+  { value: "queens", label: "Queens" },
+  { value: "manhattan", label: "Manhattan" }
 ];
 
 const specialtySelectOptions = [
@@ -127,33 +127,84 @@ function StylistRegister(props) {
         <form onSubmit={handleFormSubmit}>
           <h5>Register as a Snatched Stylist in 3 easy steps:</h5>
           <span>Step 1: Enter your personal information</span>
-          <Input
-            type="text"
-            name="firstName"
-            placeholder="first name"
-            onChange={setStylistInputData}
-            value={stylist.firstName || ""}
-          />
-          <Input
-            type="text"
-            name="lastName"
-            placeholder="last name"
-            onChange={setStylistInputData}
-            value={stylist.lastName || ""}
-          />
-          <Input
-            type="text"
-            name="zip"
-            placeholder="your home zip code"
-            onChange={setStylistInputData}
-            value={stylist.zip || ""}
-          />
-          <span>
-            Step 2: What cities would you like to set appointments in?
-          </span>
-          <Region />
-          <span>Step 3: What hair styles do you specialize in?</span>
-          <Specialty />
+          <label htmlFor="firstName">
+            <Input
+              type="text"
+              name="firstName"
+              placeholder="first name"
+              onChange={setStylistInputData}
+              value={stylist.firstName || ""}
+            />
+          </label>
+          <label htmlFor="lastName">
+            <Input
+              type="text"
+              name="lastName"
+              placeholder="last name"
+              onChange={setStylistInputData}
+              value={stylist.lastName || ""}
+            />
+          </label>
+          <label htmlFor="email">
+            <Input
+              type="text"
+              name="email"
+              placeholder="email"
+              onChange={setStylistInputData}
+              value={stylist.email || ""}
+            />
+          </label>
+          <label htmlFor="phone">
+            <Input
+              type="text"
+              name="phone"
+              placeholder="phone number"
+              onChange={setStylistInputData}
+              value={stylist.email || ""}
+            />
+          </label>
+          <label htmlFor="zip">
+            <Input
+              type="text"
+              name="zip"
+              placeholder="your home zip code"
+              onChange={setStylistInputData}
+              value={stylist.zip || ""}
+            />
+          </label>
+          <label htmlFor="region">
+            <span>
+              Step 2: What metro areas would you like to set appointments in?
+            </span>
+            <Region />
+          </label>
+          <label htmlFor="specialty">
+            <span>Step 3: What hair styles do you specialize in?</span>
+            <Specialty />
+          </label>
+
+          <section>
+            Do you own a car?
+            <label htmlFor="ownYes">
+              <Input id="ownYes" name="ownCar" type="radio" value="yes" />
+              Yes
+            </label>
+            <label htmlFor="ownNo">
+              <Input id="ownNo" name="ownCar" type="radio" value="yes" />
+              No
+            </label>
+          </section>
+          <label htmlFor="socialmedialink">
+            Please provide a link or instagram handle where we can see your
+            work.
+            <Input
+              type="text"
+              name="socialmedia"
+              placeholder="Enter link here"
+              onChange={setStylistInputData}
+              value={stylist.link || ""}
+            />
+          </label>
           <button>Create my Stylist Profile</button>
         </form>
       </div>

@@ -60,7 +60,7 @@ function Menu() {
               <Link to="/appointments">Appointments</Link>
             </li>
             <li>
-              <Link to="/logout">Logout</Link>
+              <Link to="/signin">Signin</Link>
             </li>
           </ListItems>
         </List>

@@ -180,9 +180,9 @@ function Home() {
 
       <GridHeader>Hair Styles</GridHeader>
       <GridFilter>
-        {filters.map(filter => {
+        {filters.map((filter, index) => {
           return (
-            <GridFilterBlock onClick={filterResults}>
+            <GridFilterBlock key={index} onClick={filterResults}>
               {filter.label}
             </GridFilterBlock>
           );
