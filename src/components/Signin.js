@@ -1,19 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import InputStyle from "../styles/InputStyle";
 
-const onSignIn = event => {
-  event.preventDefault();
-};
-
-const onCreateAccount = event => {
-  event.preventDefault();
-};
+const AUTH_ENDPOINT = "";
 
 function Signin() {
   const [user, setUser] = useState([]);
   const [createAccountVisible, setCreateAccountVisible] = useState(false);
 
-  const onChange = event => {
-    setUser(event.target.value);
+  const onCreateAccount = event => {
+    event.preventDefault();
+
+    fetch(AUTH_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify(user)
+    })
+      .then(response => response.json)
+      .then(json => console.log(json));
+  };
+
+  const onSignIn = event => {
+    event.preventDefault();
+
+    fetch(AUTH_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify(user)
+    })
+      .then(response => response.json)
+      .then(json => console.log(json));
+  };
+
+  const onFieldChange = event => {
+    if (!event || !event.target) return;
+
+    let value = event.target.value;
+    let name = event.target.name;
+
+    setUser(prevState => {
+      const newState = { [name]: value };
+      return { ...prevState, ...newState };
+    });
   };
 
   const onClick = event => setCreateAccountVisible(!createAccountVisible);
@@ -26,47 +57,48 @@ function Signin() {
     return (
       <form onSubmit={onCreateAccount}>
         <label htmlFor="firstName">
-          <input
+          <InputStyle
             name="firstName"
             type="text"
             value={user.firstName}
-            onChange={onChange}
+            onChange={onFieldChange}
             placeholder="First Name"
+            autoFocus
           />
         </label>
         <label htmlFor="lastName">
-          <input
+          <InputStyle
             name="lastName"
             type="text"
             value={user.lastName}
-            onChange={onChange}
+            onChange={onFieldChange}
             placeholder="LastName"
           />
         </label>
         <label htmlFor="email">
-          <input
+          <InputStyle
             name="email"
             type="text"
             value={user.email}
-            onChange={onChange}
+            onChange={onFieldChange}
             placeholder="email"
           />
         </label>
         <label htmlFor="zipcode">
-          <input
+          <InputStyle
             name="zipcode"
             type="text"
             value={user.zipcode}
-            onChange={onChange}
+            onChange={onFieldChange}
             placeholder="zipcode"
           />
         </label>
         <label htmlFor="phone">
-          <input
+          <InputStyle
             name="phone"
             type="text"
             value={user.phone}
-            onChange={onChange}
+            onChange={onFieldChange}
             placeholder="phone number"
           />
         </label>
@@ -80,30 +112,35 @@ function Signin() {
 
   const SigninView = () => {
     if (createAccountVisible) {
-      return <CreateAccount />;
+      // return <CreateAccount key="createAccount" />;
+      return CreateAccount(); // TODO: refactor to be able to reference as JSX
     } else {
       return (
-        <form onSubmit={onSignIn}>
+        <form onSubmit={onSignIn} key="signinForm">
           <label htmlFor="email">
-            <input
+            <InputStyle
               name="email"
               type="text"
-              value={user.email}
-              onChange={onChange}
+              value={user.email || ""}
+              onChange={onFieldChange}
               placeholder="Email"
             />
           </label>
           <label htmlFor="password">
-            <input
+            <InputStyle
               name="password"
-              type="text"
-              value={user.password}
-              onChange={onChange}
+              type="password"
+              value={user.password || ""}
+              onChange={onFieldChange}
               placeholder="Password"
             />
           </label>
           <label htmlFor="rememberMe">
-            <input name="rememberMe" type="checkbox" value={user.rememberMe} />
+            <InputStyle
+              name="rememberMe"
+              type="checkbox"
+              value={user.rememberMe}
+            />
             <span>Remember Me?</span>
           </label>
           <span onClick={onForgetPassword}>Forget password?</span>
@@ -120,7 +157,7 @@ function Signin() {
     }
   };
 
-  return <SigninView />;
+  return SigninView();
 }
 
 export default Signin;

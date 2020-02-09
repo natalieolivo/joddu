@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Select from "react-select";
 import { Redirect } from "@reach/router";
+import InputStyle from "../styles/InputStyle";
 
 const LOCAL_API_ENDPOINT = "http://localhost:3001/api/stylist";
 //const DEV_API_ENDPOINT = "https://joddu-api.herokuapp.com/api/stylist";
@@ -14,22 +15,11 @@ const citySelectOptions = [
 
 const specialtySelectOptions = [
   { value: "locs", label: "Locs" },
-  { value: "weave", label: "Weave" },
+  { value: "braids", label: "Braids" },
+  { value: "twists", label: "Twists" },
+  { value: "barber cuts", label: "Barber Cuts" },
   { value: "crochet", label: "Crochet" }
 ];
-
-const Input = styled.input`
-  height: 2em;
-  margin: 0.4em;
-  font-size: 28px;
-  padding-left: 1.8em;
-  border: solid 1px #ddd;
-  outline: 0;
-  background: #fff;
-  border-radius: 16px;
-  color: #888;
-  display: block;
-`;
 
 const customStyles = {
   input: styles => ({ ...styles, borderRadius: 16 })
@@ -60,9 +50,8 @@ function StylistRegister(props) {
       });
   };
 
-  const setStylistInputData = (event, attrs) => {
+  const setStylistInputData = event => {
     console.log(event);
-    console.log(attrs);
 
     let value = event.target ? event.target.value : "";
     let key = event.target ? event.target.name : "";
@@ -128,7 +117,7 @@ function StylistRegister(props) {
           <h5>Register as a Snatched Stylist in 3 easy steps:</h5>
           <span>Step 1: Enter your personal information</span>
           <label htmlFor="firstName">
-            <Input
+            <InputStyle
               type="text"
               name="firstName"
               placeholder="first name"
@@ -137,7 +126,7 @@ function StylistRegister(props) {
             />
           </label>
           <label htmlFor="lastName">
-            <Input
+            <InputStyle
               type="text"
               name="lastName"
               placeholder="last name"
@@ -146,7 +135,7 @@ function StylistRegister(props) {
             />
           </label>
           <label htmlFor="email">
-            <Input
+            <InputStyle
               type="text"
               name="email"
               placeholder="email"
@@ -155,16 +144,16 @@ function StylistRegister(props) {
             />
           </label>
           <label htmlFor="phone">
-            <Input
+            <InputStyle
               type="text"
               name="phone"
               placeholder="phone number"
               onChange={setStylistInputData}
-              value={stylist.email || ""}
+              value={stylist.phone || ""}
             />
           </label>
           <label htmlFor="zip">
-            <Input
+            <InputStyle
               type="text"
               name="zip"
               placeholder="your home zip code"
@@ -186,18 +175,18 @@ function StylistRegister(props) {
           <section>
             Do you own a car?
             <label htmlFor="ownYes">
-              <Input id="ownYes" name="ownCar" type="radio" value="yes" />
+              <InputStyle id="ownYes" name="ownCar" type="radio" value="yes" />
               Yes
             </label>
             <label htmlFor="ownNo">
-              <Input id="ownNo" name="ownCar" type="radio" value="yes" />
+              <InputStyle id="ownNo" name="ownCar" type="radio" value="yes" />
               No
             </label>
           </section>
           <label htmlFor="socialmedialink">
             Please provide a link or instagram handle where we can see your
             work.
-            <Input
+            <InputStyle
               type="text"
               name="socialmedia"
               placeholder="Enter link here"

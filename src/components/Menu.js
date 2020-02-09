@@ -28,9 +28,6 @@ const List = styled.section`
 
 const ListItems = styled.ul`
   list-style: none;
-
-  &.li {
-  }
 `;
 
 const Title = styled.h2`
