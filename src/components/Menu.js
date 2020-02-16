@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import MenuButton from "../svgs/MenuButton";
 import { Link } from "@reach/router";
+import config from "../config";
+
+const AUTH_SIGNOUT_ENDPOINT = config.AUTH_SIGNOUT_ENDPOINT || "";
 
 const Nav = styled.nav`
   background: #d5c7dd;
@@ -35,12 +38,16 @@ const Title = styled.h2`
   font-family: Futura;
 `;
 
-const CartButton = styled.section`
+const HeaderLinkList = styled.section`
   margin: 0.9em 0.9em 0 auto;
 `;
 
-function Menu() {
-  let [menuVisible, setMenuState] = useState(false);
+const userInfo =
+  localStorage.getItem("ut") && JSON.parse(localStorage.getItem("ut"));
+
+const Menu = React.forwardRef((props, ref) => {
+  console.log(ref);
+  let [menuVisible, setMenuVisible] = useState(false);
 
   const menuDisplay = () => {
     if (menuVisible) {
@@ -65,8 +72,45 @@ function Menu() {
     }
   };
 
-  const setMenuDisplay = () => {
-    setMenuState(!menuVisible);
+  const setMenuDisplay = event => {
+    setMenuVisible(!menuVisible);
+
+    const closeMenu = event => {
+      if (event.target.className !== "App") return;
+
+      setMenuVisible(false);
+    };
+
+    console.log(event.target.className);
+
+    if (!menuVisible) {
+      console.log("menu visible", ref.current);
+      ref.current.addEventListener("click", closeMenu);
+    } else {
+      console.log("menu hidden", ref.current);
+      ref.current.removeEventListener("click", closeMenu);
+    }
+  };
+
+  const onSignout = () => {
+    // remove stored token
+    localStorage.clear();
+
+    // TODO: Add message indicating signout
+    fetch(AUTH_SIGNOUT_ENDPOINT)
+      .then(response => response.json())
+      .then(json => console.log("logged out", json))
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+  const HeaderLinks = () => {
+    if (userInfo && userInfo.token) {
+      return <span onClick={onSignout}>Sign Out ({userInfo.name})</span>;
+    } else {
+      return <Link to="/signin">Sign In</Link>;
+    }
   };
 
   return (
@@ -74,31 +118,11 @@ function Menu() {
       <MenuButton setMenuDisplay={setMenuDisplay} />
       {menuDisplay()}
       <Title>Hair Care App</Title>
-      <CartButton>
-        <svg
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlnsXlink="http://www.w3.org/1999/xlink"
-          width="30"
-          height="30"
-          viewBox="0 0 16 16"
-        >
-          <path
-            fill="#000000"
-            d="M6 14.5c0 0.828-0.672 1.5-1.5 1.5s-1.5-0.672-1.5-1.5c0-0.828 0.672-1.5 1.5-1.5s1.5 0.672 1.5 1.5z"
-          ></path>
-          <path
-            fill="#000000"
-            d="M16 14.5c0 0.828-0.672 1.5-1.5 1.5s-1.5-0.672-1.5-1.5c0-0.828 0.672-1.5 1.5-1.5s1.5 0.672 1.5 1.5z"
-          ></path>
-          <path
-            fill="#000000"
-            d="M16 8v-6h-12c0-0.552-0.448-1-1-1h-3v1h2l0.751 6.438c-0.458 0.367-0.751 0.93-0.751 1.562 0 1.105 0.895 2 2 2h12v-1h-12c-0.552 0-1-0.448-1-1 0-0.003 0-0.007 0-0.010l13-1.99z"
-          ></path>
-        </svg>
-      </CartButton>
+      <HeaderLinkList>
+        <HeaderLinks />
+      </HeaderLinkList>
     </Nav>
   );
-}
+});
 
 export default Menu;

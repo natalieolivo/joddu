@@ -71,7 +71,14 @@ const SearchInputIcon = styled.svg`
   left: 25px;
 `;
 
-function Home() {
+function Home(props) {
+  const SignedInNotification = () => {
+    if (props.isSignedIn) {
+      return <h1>{props.name}, you have successfully signed in!</h1>;
+    }
+    return null;
+  };
+
   const [styles, setStyles] = useState([
     {
       style_type: "locks",
@@ -157,6 +164,8 @@ function Home() {
 
   return (
     <div>
+      <SignedInNotification />
+
       <span>Find and book a stylist:</span>
 
       <SearchInputWrapper>

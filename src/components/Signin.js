@@ -1,38 +1,61 @@
 import React, { useState, useEffect } from "react";
+import { Redirect } from "@reach/router";
 import InputStyle from "../styles/InputStyle";
+import config from "../config/index";
 
-const AUTH_ENDPOINT = "";
+const AUTH_SIGNIN_ENDPOINT = config.AUTH_SIGNIN_ENDPOINT || "";
+const AUTH_SIGNUP_ENDPOINT = config.AUTH_SIGNUP_ENDPOINT || "";
 
 function Signin() {
   const [user, setUser] = useState([]);
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [initialSignIn, setInitialSignIn] = useState(false);
   const [createAccountVisible, setCreateAccountVisible] = useState(false);
+  const token =
+    localStorage.getItem("ut") && JSON.parse(localStorage.getItem("ut")).token;
+
+  useEffect(() => {
+    if (token) {
+      setIsSignedIn(true);
+    }
+  }, [token]);
 
   const onCreateAccount = event => {
     event.preventDefault();
 
-    fetch(AUTH_ENDPOINT, {
+    fetch(AUTH_SIGNUP_ENDPOINT, {
       method: "POST",
       headers: {
         "Content-type": "application/json"
       },
       body: JSON.stringify(user)
     })
-      .then(response => response.json)
-      .then(json => console.log(json));
+      .then(response => response.json())
+      .then(payload => {
+        console.log(`Create Account`, payload);
+        localStorage.setItem("ut", JSON.stringify(payload));
+        setInitialSignIn(true);
+      });
   };
 
   const onSignIn = event => {
     event.preventDefault();
 
-    fetch(AUTH_ENDPOINT, {
+    fetch(AUTH_SIGNIN_ENDPOINT, {
       method: "POST",
       headers: {
         "Content-type": "application/json"
       },
-      body: JSON.stringify(user)
+      body: JSON.stringify({
+        email: user.email,
+        password: user.password
+      })
     })
-      .then(response => response.json)
-      .then(json => console.log(json));
+      .then(response => response.json())
+      .then(payload => {
+        localStorage.setItem("ut", JSON.stringify(payload));
+        setInitialSignIn(true);
+      });
   };
 
   const onFieldChange = event => {
@@ -60,9 +83,9 @@ function Signin() {
           <InputStyle
             name="firstName"
             type="text"
-            value={user.firstName}
+            value={user.firstName || ""}
             onChange={onFieldChange}
-            placeholder="First Name"
+            placeholder="first name"
             autoFocus
           />
         </label>
@@ -70,25 +93,34 @@ function Signin() {
           <InputStyle
             name="lastName"
             type="text"
-            value={user.lastName}
+            value={user.lastName || ""}
             onChange={onFieldChange}
-            placeholder="LastName"
+            placeholder="last name"
           />
         </label>
         <label htmlFor="email">
           <InputStyle
             name="email"
             type="text"
-            value={user.email}
+            value={user.email || ""}
             onChange={onFieldChange}
             placeholder="email"
           />
         </label>
-        <label htmlFor="zipcode">
+        <label htmlFor="email">
           <InputStyle
-            name="zipcode"
+            name="password"
+            type="password"
+            value={user.password || ""}
+            onChange={onFieldChange}
+            placeholder="password"
+          />
+        </label>
+        <label htmlFor="zip">
+          <InputStyle
+            name="zip"
             type="text"
-            value={user.zipcode}
+            value={user.zip || ""}
             onChange={onFieldChange}
             placeholder="zipcode"
           />
@@ -97,7 +129,7 @@ function Signin() {
           <InputStyle
             name="phone"
             type="text"
-            value={user.phone}
+            value={user.phone || ""}
             onChange={onFieldChange}
             placeholder="phone number"
           />
@@ -111,6 +143,12 @@ function Signin() {
   };
 
   const SigninView = () => {
+    if (initialSignIn) {
+      //TODO: Redirect to the last location visited
+      return <Redirect noThrow to={`/home/loggedin/${user.firstName}`} />;
+    } else if (isSignedIn) {
+      return <Redirect noThrow to={`/home`} />;
+    }
     if (createAccountVisible) {
       // return <CreateAccount key="createAccount" />;
       return CreateAccount(); // TODO: refactor to be able to reference as JSX

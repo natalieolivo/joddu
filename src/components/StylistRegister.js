@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import { Redirect } from "@reach/router";
 import InputStyle from "../styles/InputStyle";
 
-const LOCAL_API_ENDPOINT = "http://localhost:3001/api/stylist";
-//const DEV_API_ENDPOINT = "https://joddu-api.herokuapp.com/api/stylist";
+import config from "../config/index";
+
+const API_REGISTER_ENDPOINT = config.API_REGISTER_ENDPOINT || "";
 
 const citySelectOptions = [
   { value: "brooklyn", label: "Brooklyn" },
@@ -29,12 +29,19 @@ let postData = {};
 
 function StylistRegister(props) {
   const [stylist, setStylist] = useState([]);
-  const [toStylistProfile, setToStylistProfile] = useState(false);
+  const [activeProfile, setActiveStylistProfile] = useState(false);
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  useEffect(() => {
+    setIsSignedIn(
+      localStorage.getItem("ut") && localStorage.getItem("ut").token
+    );
+  }, []);
 
   const handleFormSubmit = event => {
     event.preventDefault();
 
-    fetch(LOCAL_API_ENDPOINT, {
+    fetch(API_REGISTER_ENDPOINT, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -46,7 +53,7 @@ function StylistRegister(props) {
         setStylist(prevState => {
           return { ...prevState, ...result };
         });
-        setToStylistProfile(true);
+        setActiveStylistProfile(true);
       });
   };
 
@@ -107,9 +114,11 @@ function StylistRegister(props) {
     />
   );
 
-  if (toStylistProfile === true) {
+  if (activeProfile === true) {
     //return <pre>{JSON.stringify(stylist)}</pre>;
     return <Redirect noThrow to={`/stylists/profile/${stylist._id}`} />;
+  } else if (!isSignedIn) {
+    return <Redirect noThrow to={`/signin`} />;
   } else {
     return (
       <div>
