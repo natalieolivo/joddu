@@ -7,12 +7,19 @@ import config from "../config";
 const AUTH_SIGNOUT_ENDPOINT = config.AUTH_SIGNOUT_ENDPOINT || "";
 
 const Nav = styled.nav`
-  background: #d5c7dd;
+  background: ${props => props.theme.bg};
   font-size: 1em;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
+
+Nav.defaultProps = {
+  theme: {
+    main: "neutral",
+    bg: "brown"
+  }
+};
 
 const List = styled.section`
   margin: 0;
@@ -81,13 +88,9 @@ const Menu = React.forwardRef((props, ref) => {
       setMenuVisible(false);
     };
 
-    console.log(event.target.className);
-
     if (!menuVisible) {
-      console.log("menu visible", ref.current);
       ref.current.addEventListener("click", closeMenu);
     } else {
-      console.log("menu hidden", ref.current);
       ref.current.removeEventListener("click", closeMenu);
     }
   };

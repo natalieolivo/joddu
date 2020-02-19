@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
-import { Redirect } from "@reach/router";
+import { Redirect, navigate } from "@reach/router";
 import InputStyle from "../styles/InputStyle";
 
 import config from "../config/index";
 
 const API_REGISTER_ENDPOINT = config.API_REGISTER_ENDPOINT || "";
+const token =
+  localStorage.getItem("ut") && JSON.parse(localStorage.getItem("ut")).token;
 
 const citySelectOptions = [
   { value: "brooklyn", label: "Brooklyn" },
@@ -30,13 +32,13 @@ let postData = {};
 function StylistRegister(props) {
   const [stylist, setStylist] = useState([]);
   const [activeProfile, setActiveStylistProfile] = useState(false);
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isSignedIn, setIsSignedIn] = useState(typeof token === "string");
 
   useEffect(() => {
-    setIsSignedIn(
-      localStorage.getItem("ut") && localStorage.getItem("ut").token
-    );
-  }, []);
+    if (!isSignedIn) {
+      navigate(`/signin`);
+    }
+  }, [isSignedIn]);
 
   const handleFormSubmit = event => {
     event.preventDefault();
@@ -115,10 +117,7 @@ function StylistRegister(props) {
   );
 
   if (activeProfile === true) {
-    //return <pre>{JSON.stringify(stylist)}</pre>;
     return <Redirect noThrow to={`/stylists/profile/${stylist._id}`} />;
-  } else if (!isSignedIn) {
-    return <Redirect noThrow to={`/signin`} />;
   } else {
     return (
       <div>

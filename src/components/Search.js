@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import Button from "../styles/Button";
 
 // TODO: Need to make api request based on location for zip
 //const DEV_API_ENDPOINT = "https://joddu-api.herokuapp.com/api/stylist";
@@ -53,12 +54,10 @@ const SearchInput = styled.input`
 `;
 
 const SearchBtn = styled.button`
-  background: #450440;
   margin: 0.4em 0.8em;
   font-size: 28px;
   padding: 0.6em;
   cursor: pointer;
-  background: #450440;
   color: #fff;
   border-radius: 16px;
   border: none;
@@ -183,7 +182,7 @@ function Home(props) {
             d="M8 0c-2.761 0-5 2.239-5 5 0 5 5 11 5 11s5-6 5-11c0-2.761-2.239-5-5-5zM8 8.063c-1.691 0-3.063-1.371-3.063-3.063s1.371-3.063 3.063-3.063 3.063 1.371 3.063 3.063-1.371 3.063-3.063 3.063zM6.063 5c0-1.070 0.867-1.938 1.938-1.938s1.938 0.867 1.938 1.938c0 1.070-0.867 1.938-1.938 1.938s-1.938-0.867-1.938-1.938z"
           ></path>
         </SearchInputIcon>
-        <SearchBtn>search</SearchBtn>
+        <Button>search</Button>
       </SearchInputWrapper>
       <a href="/stylists/register">Register as a Stylist</a>
 

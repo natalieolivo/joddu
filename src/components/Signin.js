@@ -54,7 +54,7 @@ function Signin() {
       .then(response => response.json())
       .then(payload => {
         localStorage.setItem("ut", JSON.stringify(payload));
-        setInitialSignIn(true);
+        setIsSignedIn(true);
       });
   };
 
@@ -144,11 +144,12 @@ function Signin() {
 
   const SigninView = () => {
     if (initialSignIn) {
-      //TODO: Redirect to the last location visited
-      return <Redirect noThrow to={`/home/loggedin/${user.firstName}`} />;
+      //TODO: Redirect to the last location visited?
+      return <Redirect noThrow to={`/home/signedin/${user.firstName}`} />;
     } else if (isSignedIn) {
       return <Redirect noThrow to={`/home`} />;
     }
+
     if (createAccountVisible) {
       // return <CreateAccount key="createAccount" />;
       return CreateAccount(); // TODO: refactor to be able to reference as JSX
