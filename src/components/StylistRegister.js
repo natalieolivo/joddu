@@ -32,7 +32,7 @@ let postData = {};
 function StylistRegister(props) {
   const [stylist, setStylist] = useState([]);
   const [activeProfile, setActiveStylistProfile] = useState(false);
-  const [isSignedIn, setIsSignedIn] = useState(typeof token === "string");
+  const [isSignedIn] = useState(typeof token === "string");
 
   useEffect(() => {
     if (!isSignedIn) {

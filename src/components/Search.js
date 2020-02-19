@@ -53,17 +53,6 @@ const SearchInput = styled.input`
   color: #888;
 `;
 
-const SearchBtn = styled.button`
-  margin: 0.4em 0.8em;
-  font-size: 28px;
-  padding: 0.6em;
-  cursor: pointer;
-  color: #fff;
-  border-radius: 16px;
-  border: none;
-  outline: 0;
-`;
-
 const SearchInputIcon = styled.svg`
   position: absolute;
   top: 25px;
