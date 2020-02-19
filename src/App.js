@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import styled, { ThemeProvider } from "styled-components";
-import config from "../src/config";
+import { getActiveTheme, setActiveTheme } from "./utils/utils";
 
 // Form Components
 import Select from "react-select";
@@ -14,10 +14,6 @@ import Search from "./components/Search";
 import Signin from "./components/Signin";
 import { Router } from "@reach/router";
 
-const ut = localStorage.getItem("ut");
-const token = ut && JSON.parse(ut).token;
-const id = ut && JSON.parse(ut).id;
-
 const Header = styled.header`
   display: block;
   width: 100%;
@@ -25,58 +21,20 @@ const Header = styled.header`
   margin-bottom: 0.8em;
 `;
 
-// const theme = {
-//   main: "panafrican",
-//   bg: "#AA0F20",
-//   primaryBtn: "#000"
-// };
-
 function App() {
+  const [activeTheme, setThemeState] = useState({});
   const appRef = useRef(null);
-  // const [theme, setTheme] = useState({
-  //   main: "panafrican",
-  //   bg: "#AA0F20",
-  //   primaryBtn: "#000"
-  // });
-  const [theme, setTheme] = useState({});
-
-  const getTheme = themeKey => {
-    const allThemes = {
-      panAfrican: {
-        main: "panafrican",
-        bg: "#AA0F20",
-        primaryBtn: "#000"
-      },
-      neutral: {
-        main: "neutral",
-        bg: "#45311F",
-        primaryBtn: "#FF8E88"
-      }
-    };
-
-    return allThemes[themeKey];
-  };
 
   const ThemeManager = () => {
-    const API_THEMES_ENDPOINT = config.API_THEMES_ENDPOINT;
+    // const API_THEMES_ENDPOINT = config.API_THEMES_ENDPOINT;
     const themeSelectOptions = [
       { value: "panAfrican", label: "Pan African" },
       { value: "neutral", label: "Neutral" }
     ];
 
     const onThemeChange = selectValue => {
-      const theme = { theme: selectValue };
-
-      fetch(API_THEMES_ENDPOINT, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(theme)
-      });
-
-      setTheme(getTheme(selectValue));
+      setActiveTheme(selectValue);
+      setThemeState(getActiveTheme);
     };
 
     return (
@@ -86,7 +44,7 @@ function App() {
             name="theme"
             isMulti={true}
             options={themeSelectOptions}
-            value={theme}
+            value={activeTheme}
             placeholder="Enter new theme"
             onChange={value => {
               console.log(value[1].value);
@@ -99,25 +57,18 @@ function App() {
   };
 
   useEffect(() => {
-    // get active theme
-    fetch("http://localhost:3001/api/theme/5e4d60890b49abf7eaeb6e67", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then(response => response.json())
-      .then(jsonResponse => {
-        setTheme(getTheme(jsonResponse.theme));
-      })
-      .catch(e => {
-        console.error(e);
-      });
+    if (typeof getActiveTheme().main !== "string") {
+      // if not set, default theme after first render
+      setActiveTheme("panAfrican");
+      setThemeState(getActiveTheme());
+    } else {
+      setThemeState(getActiveTheme());
+    }
   }, []);
 
   return (
     <div className="App" ref={appRef}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={activeTheme}>
         <Header>
           <Menu ref={appRef} />
         </Header>
@@ -127,13 +78,6 @@ function App() {
           <StylistRegister path="/stylists/register" />
           <StylistProfile path="/stylists/profile/:profileId" />
           <Signin path="/signin" />
-
-          {/* Write styles for neutral and pan african theme */}
-          {/* fetch, theme settings, set state for theme, pass theme via provider or context api */}
-          {/* POST /theme - Add one theme */}
-          {/* PUT /theme/:id - Edit one theme */}
-          {/* GET /theme/:id - Get one theme */}
-
           <ThemeManager path="/themes" />
         </Router>
       </ThemeProvider>
