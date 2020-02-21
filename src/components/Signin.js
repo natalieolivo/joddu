@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "@reach/router";
-import InputStyle from "../styles/InputStyle";
+import InputStyle from "../styles/Input";
 import config from "../config/index";
 
 const AUTH_SIGNIN_ENDPOINT = config.AUTH_SIGNIN_ENDPOINT || "";

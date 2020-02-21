@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import MenuButton from "../svgs/MenuButton";
 import { Link } from "@reach/router";
 import config from "../config";
 
@@ -58,9 +57,14 @@ const Logo = styled.div`
 const HeaderLinkList = styled.section`
   margin: 0 0.9em 0 auto;
   cursor: pointer;
-  color: #fff;
-  text-transform: uppercase;
-  font-size: 1rem;
+
+  span,
+  a {
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 1rem;
+  }
 `;
 
 const userInfo =
@@ -147,9 +151,9 @@ const Menu = React.forwardRef((props, ref) => {
           <g
             id="Symbols"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <g id="Block-S">
               <g>

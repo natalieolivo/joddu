@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import { Redirect, navigate } from "@reach/router";
-import InputStyle from "../styles/InputStyle";
+import InputStyle from "../styles/Input";
 
 import config from "../config/index";
 
