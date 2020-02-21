@@ -15,10 +15,23 @@ import Signin from "./components/Signin";
 import { Router } from "@reach/router";
 
 const Header = styled.header`
-  display: block;
+  position: sticky;
+  top: 0;
   width: 100%;
-  border-bottom: solid 1px #ddd;
-  margin-bottom: 0.8em;
+  border-bottom: solid 1px #979797;
+  margin-bottom: 1rem;
+`;
+
+const AppStyle = styled.div`
+  width: 100%;
+  font-family: "Josefin Sans", serif;
+  background: ${props => props.theme.bg};
+  box-sizing: border-box;
+  min-height: 100vh;
+  display: flex;
+  flex-flow: column;
+  font-size: calc(10px + 2vmin);
+  color: #000;
 `;
 
 function App() {
@@ -67,8 +80,8 @@ function App() {
   }, []);
 
   return (
-    <div className="App" ref={appRef}>
-      <ThemeProvider theme={activeTheme}>
+    <ThemeProvider theme={activeTheme}>
+      <AppStyle className="App" ref={appRef}>
         <Header>
           <Menu ref={appRef} />
         </Header>
@@ -80,8 +93,8 @@ function App() {
           <Signin path="/signin" />
           <ThemeManager path="/themes" />
         </Router>
-      </ThemeProvider>
-    </div>
+      </AppStyle>
+    </ThemeProvider>
   );
 }
 

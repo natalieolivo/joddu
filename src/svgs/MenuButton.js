@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const MenuBtn = styled.section`
-  margin: 0.5em auto 0 0.5em;
   padding: 0.4em;
   height: 30px;
   border-radius: 40px;
