@@ -17,13 +17,13 @@ import { Router } from "@reach/router";
 const Header = styled.header`
   position: sticky;
   top: 0;
+  z-index: 1;
   width: 100%;
   border-bottom: solid 1px #979797;
   margin-bottom: 1rem;
 `;
 
 const AppStyle = styled.div`
-  width: 100%;
   font-family: "Josefin Sans", serif;
   background: ${props => props.theme.bg};
   box-sizing: border-box;

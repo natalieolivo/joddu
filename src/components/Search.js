@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../styles/Button";
 import InputStyle from "../styles/InputStyle";
+import img from "../images/womanwithcomb.png";
 
 // TODO: Need to make api request based on location for zip
 //const DEV_API_ENDPOINT = "https://joddu-api.herokuapp.com/api/stylist";
@@ -51,13 +52,7 @@ const SearchInputIcon = styled.svg`
 const SearchBoxStyle = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10rem 0;
-
-  h3 {
-    margin: 0.8em 0;
-    text-align: center;
-    font-size: 2rem;
-  }
+  padding: 10rem 8rem;
 
   a {
     color: #fff;
@@ -72,6 +67,21 @@ const SearchBoxStyle = styled.div`
     font-size: 1.1rem;
     font-weight: 900;
   }
+`;
+
+const SecondaryHeader = styled.h3`
+  margin: 0.8em 0;
+  text-align: center;
+  font-size: 2rem;
+`;
+
+const FlexRightBoxStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 2rem;
+  background: url(${img}) no-repeat right;
+  min-height: 40rem;
 `;
 
 function Home(props) {
@@ -168,7 +178,7 @@ function Home(props) {
   return (
     <SearchBoxStyle>
       <SignedInNotification />
-      <h3>Hair Love, Anytime. Periodt.</h3>
+      <SecondaryHeader>Hair Love, Anytime. Periodt.</SecondaryHeader>
       <SearchInputWrapper>
         <InputStyle type="text" placeholder="11435" />
         <SearchInputIcon
@@ -187,6 +197,11 @@ function Home(props) {
         <Button>Find Artists Now</Button>
       </SearchInputWrapper>
       <a href="/stylists/register">Register as a Hair Artist</a>
+
+      <FlexRightBoxStyle>
+        <SecondaryHeader>Natural Hair Artists on Demand</SecondaryHeader>
+        <p>This is a test. This is a test. This is a test. </p>
+      </FlexRightBoxStyle>
 
       {/* <GridHeader>Hair Styles</GridHeader>
       <GridFilter>
