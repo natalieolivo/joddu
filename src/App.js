@@ -32,11 +32,31 @@ const AppStyle = styled.div`
   flex-flow: column;
   font-size: calc(10px + 2vmin);
   color: #000;
+
+  &.scroll-state-start nav {
+    background: #5f735e;
+    transition: all 300ms linear;
+  }
 `;
 
 function App() {
   const [activeTheme, setThemeState] = useState({});
   const appRef = useRef(null);
+
+  useEffect(() => {
+    const element = appRef.current;
+
+    const attachHeaderClass = e => {
+      if (window.pageYOffset > 0) {
+        element.classList.remove("scroll-state-end");
+        element.classList.add("scroll-state-start");
+      } else {
+        element.classList.remove("scroll-state-start");
+        element.classList.add("scroll-state-end");
+      }
+    };
+    window.addEventListener("scroll", attachHeaderClass);
+  }, []);
 
   const ThemeManager = () => {
     // const API_THEMES_ENDPOINT = config.API_THEMES_ENDPOINT;
