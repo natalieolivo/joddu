@@ -21,7 +21,7 @@ const SearchInputIcon = styled.svg`
 const BoxStyle = styled.div`
   padding: 8rem 4rem 10rem;
   @media (max-width: 500px) {
-    padding: 8rem 0;
+    padding: 8rem 1rem 8rem;
   }
 `;
 
@@ -49,11 +49,26 @@ const FlexRightBoxStyle = styled(BoxStyle)`
   margin-top: 2rem;
   background: #910717 url(${WomanWithCombImg}) no-repeat right 2rem;
   min-height: 40rem;
-  padding: 10rem 4rem;
+
   p {
     color: #fff;
-    padding: 0rem;
+    margin: 0;
     line-height: 2rem;
+  }
+
+  @media (max-width: 500px) {
+    padding-bottom: 0;
+    h3 {
+      margin-top: 4.2rem;
+      text-align: left;
+      padding-right: 6rem;
+    }
+    p {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+    background-position: 155% 2rem;
   }
 `;
 
@@ -62,6 +77,28 @@ const FlexLeftBoxStyle = styled(BoxStyle)`
   background: #fff url(${HowItWorksImg}) no-repeat left 2rem;
   ol {
     margin-left: 33%;
+  }
+  @media (max-width: 500px) {
+    padding-top: 4rem;
+    background-position: 0 10rem;
+    h3 {
+      margin: 0;
+    }
+    ol {
+      color: #fff;
+      margin: 26rem 0 0;
+      background: #000;
+      padding: 3rem;
+      position: absolute;
+      left: 0;
+      line-height: 2rem;
+      background: #000;
+    }
+    p {
+      margin: 1rem 0;
+      font-size: 1rem;
+      color: #769075;
+    }
   }
 `;
 
@@ -116,8 +153,22 @@ function Home(props) {
               prioritize the health, beauty and style of your hair equally.
             </p>
           </li>
-          <li>Book the Artist of your choice at the time of your choice.</li>
-          <li>Get Ready To Look and Feel Great!</li>
+          <li>
+            Book the Artist of your choice at the time of your choice.
+            <p>
+              Our schedules are flexible and can be booked online. Check an
+              artists calendar to confirm availability. They come to your place
+              of business, home or salon near you. This allows you flexibility
+              and on demand service.
+            </p>
+          </li>
+          <li>
+            Get Ready To Look and Feel Great!
+            <p>
+              Our service works for convenient service for special occasions, or
+              fine grain control over beauty rituals.
+            </p>
+          </li>
         </ol>
       </FlexLeftBoxStyle>
     </>
