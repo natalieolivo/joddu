@@ -13,6 +13,7 @@ import StylistProfile from "./components/StylistProfile";
 import Search from "./components/Search";
 import Signin from "./components/Signin";
 import { Router } from "@reach/router";
+import FormBoxStyle from "./styles/Form";
 
 const Header = styled.header`
   position: sticky;
@@ -59,33 +60,39 @@ function App() {
   }, []);
 
   const ThemeManager = () => {
-    // const API_THEMES_ENDPOINT = config.API_THEMES_ENDPOINT;
+    const customStyles = {
+      container: styles => ({ ...styles, width: "20rem" })
+    };
+
     const themeSelectOptions = [
       { value: "panAfrican", label: "Pan African" },
       { value: "neutral", label: "Neutral" }
     ];
 
     const onThemeChange = selectValue => {
+      console.log(selectValue);
       setActiveTheme(selectValue);
       setThemeState(getActiveTheme);
     };
 
     return (
-      <form>
-        <label htmlFor="theme">
-          <Select
-            name="theme"
-            isMulti={true}
-            options={themeSelectOptions}
-            value={activeTheme}
-            placeholder="Enter new theme"
-            onChange={value => {
-              console.log(value[1].value);
-              onThemeChange(value[1].value);
-            }}
-          ></Select>
-        </label>
-      </form>
+      <FormBoxStyle>
+        <form>
+          <label htmlFor="theme">
+            <Select
+              name="theme"
+              options={themeSelectOptions}
+              styles={customStyles}
+              value={activeTheme.main}
+              placeholder="Choose a theme"
+              onChange={value => {
+                if (!value) return;
+                onThemeChange(value.value);
+              }}
+            ></Select>
+          </label>
+        </form>
+      </FormBoxStyle>
     );
   };
 

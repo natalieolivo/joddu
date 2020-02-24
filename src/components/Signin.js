@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "@reach/router";
+
+import FormBoxStyle from "../styles/Form";
 import InputStyle from "../styles/Input";
+import ButtonStyle from "../styles/Button";
+import { HandlerLinkStyle } from "../styles/Link";
+
 import config from "../config/index";
 
 const AUTH_SIGNIN_ENDPOINT = config.AUTH_SIGNIN_ENDPOINT || "";
@@ -78,67 +83,70 @@ function Signin() {
 
   const CreateAccount = () => {
     return (
-      <form onSubmit={onCreateAccount}>
-        <label htmlFor="firstName">
-          <InputStyle
-            name="firstName"
-            type="text"
-            value={user.firstName || ""}
-            onChange={onFieldChange}
-            placeholder="first name"
-            autoFocus
-          />
-        </label>
-        <label htmlFor="lastName">
-          <InputStyle
-            name="lastName"
-            type="text"
-            value={user.lastName || ""}
-            onChange={onFieldChange}
-            placeholder="last name"
-          />
-        </label>
-        <label htmlFor="email">
-          <InputStyle
-            name="email"
-            type="text"
-            value={user.email || ""}
-            onChange={onFieldChange}
-            placeholder="email"
-          />
-        </label>
-        <label htmlFor="email">
-          <InputStyle
-            name="password"
-            type="password"
-            value={user.password || ""}
-            onChange={onFieldChange}
-            placeholder="password"
-          />
-        </label>
-        <label htmlFor="zip">
-          <InputStyle
-            name="zip"
-            type="text"
-            value={user.zip || ""}
-            onChange={onFieldChange}
-            placeholder="zipcode"
-          />
-        </label>
-        <label htmlFor="phone">
-          <InputStyle
-            name="phone"
-            type="text"
-            value={user.phone || ""}
-            onChange={onFieldChange}
-            placeholder="phone number"
-          />
-        </label>
-        <button>Create Account</button>
-        <p>
-          Have an Account? Sign in <span onClick={onClick}>here.</span>
-        </p>
-      </form>
+      <FormBoxStyle>
+        <form onSubmit={onCreateAccount}>
+          <label htmlFor="firstName">
+            <InputStyle
+              name="firstName"
+              type="text"
+              value={user.firstName || ""}
+              onChange={onFieldChange}
+              placeholder="first name"
+              autoFocus
+            />
+          </label>
+          <label htmlFor="lastName">
+            <InputStyle
+              name="lastName"
+              type="text"
+              value={user.lastName || ""}
+              onChange={onFieldChange}
+              placeholder="last name"
+            />
+          </label>
+          <label htmlFor="email">
+            <InputStyle
+              name="email"
+              type="text"
+              value={user.email || ""}
+              onChange={onFieldChange}
+              placeholder="email"
+            />
+          </label>
+          <label htmlFor="email">
+            <InputStyle
+              name="password"
+              type="password"
+              value={user.password || ""}
+              onChange={onFieldChange}
+              placeholder="password"
+            />
+          </label>
+          <label htmlFor="zip">
+            <InputStyle
+              name="zip"
+              type="text"
+              value={user.zip || ""}
+              onChange={onFieldChange}
+              placeholder="zipcode"
+            />
+          </label>
+          <label htmlFor="phone">
+            <InputStyle
+              name="phone"
+              type="text"
+              value={user.phone || ""}
+              onChange={onFieldChange}
+              placeholder="phone number"
+            />
+          </label>
+          <ButtonStyle>Create Account</ButtonStyle>
+          <p>
+            Have an Account? Sign in
+            <HandlerLinkStyle onClick={onClick}>here.</HandlerLinkStyle>
+          </p>
+        </form>
+      </FormBoxStyle>
     );
   };
 
@@ -155,43 +163,36 @@ function Signin() {
       return CreateAccount(); // TODO: refactor to be able to reference as JSX
     } else {
       return (
-        <form onSubmit={onSignIn} key="signinForm">
-          <label htmlFor="email">
-            <InputStyle
-              name="email"
-              type="text"
-              value={user.email || ""}
-              onChange={onFieldChange}
-              placeholder="Email"
-            />
-          </label>
-          <label htmlFor="password">
-            <InputStyle
-              name="password"
-              type="password"
-              value={user.password || ""}
-              onChange={onFieldChange}
-              placeholder="Password"
-            />
-          </label>
-          <label htmlFor="rememberMe">
-            <InputStyle
-              name="rememberMe"
-              type="checkbox"
-              value={user.rememberMe}
-            />
-            <span>Remember Me?</span>
-          </label>
-          <span onClick={onForgetPassword}>Forget password?</span>
-          <button>signin</button>
-          <section>
-            <p>Or sign in with Facebook:</p>
-            <button>Continue</button>
-          </section>
-          <p>
-            Need an Account? Create one <span onClick={onClick}>here.</span>
-          </p>
-        </form>
+        <FormBoxStyle>
+          <form onSubmit={onSignIn} key="signinForm">
+            <label htmlFor="email">
+              <InputStyle
+                name="email"
+                type="text"
+                value={user.email || ""}
+                onChange={onFieldChange}
+                placeholder="Email"
+              />
+            </label>
+            <label htmlFor="password">
+              <InputStyle
+                name="password"
+                type="password"
+                value={user.password || ""}
+                onChange={onFieldChange}
+                placeholder="Password"
+              />
+            </label>
+            <HandlerLinkStyle onClick={onForgetPassword}>
+              Forget password?
+            </HandlerLinkStyle>
+            <ButtonStyle>sign in</ButtonStyle>
+            <p>
+              Need an Account?
+              <HandlerLinkStyle onClick={onClick}>Create one.</HandlerLinkStyle>
+            </p>
+          </form>
+        </FormBoxStyle>
       );
     }
   };

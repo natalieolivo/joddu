@@ -9,7 +9,7 @@ const InputStyle = styled.input`
   outline: 0;
   background: #000;
   border-radius: 10px;
-  color: #888;
+  color: #979797;
   display: block;
 `;
 

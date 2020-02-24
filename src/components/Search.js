@@ -1,8 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import Button from "../styles/Button";
+
+import ButtonStyle from "../styles/Button";
 import InputStyle from "../styles/Input";
-import LinkStyle from "../styles/Link";
+import { LinkStyle } from "../styles/Link";
+import SecondaryHeader from "../styles/SecondaryHeader";
+
 import WomanWithCombImg from "../images/womanwithcomb.png";
 import HowItWorksImg from "../images/howitworks.png";
 
@@ -28,18 +31,6 @@ const BoxStyle = styled.div`
 const SearchBoxStyle = styled(BoxStyle)`
   display: flex;
   flex-direction: column;
-
-  button {
-    margin: 1rem auto;
-    font-size: 1.1rem;
-    font-weight: 900;
-  }
-`;
-
-const SecondaryHeader = styled.h3`
-  margin: 0.8em 0;
-  text-align: center;
-  font-size: 2rem;
 `;
 
 const FlexRightBoxStyle = styled(BoxStyle)`
@@ -130,7 +121,7 @@ function Home(props) {
               d="M8 0c-2.761 0-5 2.239-5 5 0 5 5 11 5 11s5-6 5-11c0-2.761-2.239-5-5-5zM8 8.063c-1.691 0-3.063-1.371-3.063-3.063s1.371-3.063 3.063-3.063 3.063 1.371 3.063 3.063-1.371 3.063-3.063 3.063zM6.063 5c0-1.070 0.867-1.938 1.938-1.938s1.938 0.867 1.938 1.938c0 1.070-0.867 1.938-1.938 1.938s-1.938-0.867-1.938-1.938z"
             ></path>
           </SearchInputIcon>
-          <Button>Find Artists Now</Button>
+          <ButtonStyle>Find Artists Now</ButtonStyle>
         </SearchInputWrapper>
         <LinkStyle to="/stylists/register">Register as a Hair Artist</LinkStyle>
       </SearchBoxStyle>
@@ -165,8 +156,9 @@ function Home(props) {
           <li>
             Get Ready To Look and Feel Great!
             <p>
-              Our service works for convenient service for special occasions, or
-              fine grain control over beauty rituals.
+              Our service provides convenience for special occasions, or fine
+              grain control over beauty rituals.
+              <ButtonStyle>Book Now</ButtonStyle>
             </p>
           </li>
         </ol>

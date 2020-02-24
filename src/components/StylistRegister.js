@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import { Redirect, navigate } from "@reach/router";
+
+import ButtonStyle from "../styles/Button";
+import FormBoxStyle from "../styles/Form";
 import InputStyle from "../styles/Input";
+import RadioStyle from "../styles/Radio";
+import styled from "styled-components";
 
 import config from "../config/index";
+import SecondaryHeader from "../styles/SecondaryHeader";
 
 const API_REGISTER_ENDPOINT = config.API_REGISTER_ENDPOINT || "";
 const token =
@@ -23,13 +29,24 @@ const specialtySelectOptions = [
   { value: "crochet", label: "Crochet" }
 ];
 
-const customStyles = {
-  input: styles => ({ ...styles, borderRadius: 16 })
-};
-
 let postData = {};
 
 function StylistRegister(props) {
+  console.log(props);
+  const customStyles = {
+    input: styles => ({ ...styles, borderRadius: 16 }),
+    container: styles => ({ ...styles, maxWidth: "20rem" }),
+    control: styles => ({
+      ...styles,
+      backgroundColor: `${props.theme}`
+    })
+  };
+
+  const RegisterFormBoxStyle = styled(FormBoxStyle)`
+    form {
+      max-width: min-content;
+    }
+  `;
   const [stylist, setStylist] = useState([]);
   const [activeProfile, setActiveStylistProfile] = useState(false);
   const [isSignedIn] = useState(typeof token === "string");
@@ -120,9 +137,11 @@ function StylistRegister(props) {
     return <Redirect noThrow to={`/stylists/profile/${stylist._id}`} />;
   } else {
     return (
-      <div>
+      <RegisterFormBoxStyle>
         <form onSubmit={handleFormSubmit}>
-          <h5>Register as a Snatched Stylist in 3 easy steps:</h5>
+          <SecondaryHeader>
+            Register as a Snatched Hair Artist in 3 easy steps:
+          </SecondaryHeader>
           <span>Step 1: Enter your personal information</span>
           <label htmlFor="firstName">
             <InputStyle
@@ -183,15 +202,15 @@ function StylistRegister(props) {
           <section>
             Do you own a car?
             <label htmlFor="ownYes">
-              <InputStyle id="ownYes" name="ownCar" type="radio" value="yes" />
+              <RadioStyle id="ownYes" name="ownCar" type="radio" value="yes" />
               Yes
             </label>
             <label htmlFor="ownNo">
-              <InputStyle id="ownNo" name="ownCar" type="radio" value="yes" />
+              <RadioStyle id="ownNo" name="ownCar" type="radio" value="yes" />
               No
             </label>
           </section>
-          <label htmlFor="socialmedialink">
+          <label htmlFor="socialmedia">
             Please provide a link or instagram handle where we can see your
             work.
             <InputStyle
@@ -199,12 +218,12 @@ function StylistRegister(props) {
               name="socialmedia"
               placeholder="Enter link here"
               onChange={setStylistInputData}
-              value={stylist.link || ""}
+              value={stylist.socialmedia || ""}
             />
           </label>
-          <button>Create my Stylist Profile</button>
+          <ButtonStyle>Create my Stylist Profile</ButtonStyle>
         </form>
-      </div>
+      </RegisterFormBoxStyle>
     );
   }
 }
