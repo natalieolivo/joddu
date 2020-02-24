@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
+const ut = localStorage.getItem("ut");
+const token = ut && JSON.parse(ut).token;
+
 const ProfileInfo = styled.div`
   display: flex;
   flex-flow: row;
@@ -18,7 +21,11 @@ const StylistProfile = props => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch(LOCAL_API_ENDPOINT)
+    fetch(LOCAL_API_ENDPOINT, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
       .then(response => {
         return response.json();
       })

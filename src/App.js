@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
+
 import styled, { ThemeProvider } from "styled-components";
+
 import { getActiveTheme, setActiveTheme } from "./utils/utils";
 
 // Form Components

@@ -31,6 +31,12 @@ const specialtySelectOptions = [
 
 let postData = {};
 
+const RegisterFormBoxStyle = styled(FormBoxStyle)`
+  form {
+    max-width: min-content;
+  }
+`;
+
 function StylistRegister(props) {
   console.log(props);
   const customStyles = {
@@ -42,11 +48,6 @@ function StylistRegister(props) {
     })
   };
 
-  const RegisterFormBoxStyle = styled(FormBoxStyle)`
-    form {
-      max-width: min-content;
-    }
-  `;
   const [stylist, setStylist] = useState([]);
   const [activeProfile, setActiveStylistProfile] = useState(false);
   const [isSignedIn] = useState(typeof token === "string");
@@ -60,12 +61,15 @@ function StylistRegister(props) {
   const handleFormSubmit = event => {
     event.preventDefault();
 
+    const body = { ...stylist, token };
+
     fetch(API_REGISTER_ENDPOINT, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify(stylist)
+      body: JSON.stringify(body)
     })
       .then(response => response.json())
       .then(result => {
@@ -142,7 +146,7 @@ function StylistRegister(props) {
           <SecondaryHeader>
             Register as a Snatched Hair Artist in 3 easy steps:
           </SecondaryHeader>
-          <span>Step 1: Enter your personal information</span>
+          <span>Step 1: Enter your personal information:</span>
           <label htmlFor="firstName">
             <InputStyle
               type="text"
@@ -211,10 +215,13 @@ function StylistRegister(props) {
             </label>
           </section>
           <label htmlFor="socialmedia">
-            Please provide a link or instagram handle where we can see your
-            work.
+            <span>
+              Please provide a link or instagram handle where we can see your
+              work.
+            </span>
             <InputStyle
               type="text"
+              prefix="@"
               name="socialmedia"
               placeholder="Enter link here"
               onChange={setStylistInputData}
