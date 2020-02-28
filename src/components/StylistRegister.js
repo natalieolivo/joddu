@@ -12,13 +12,13 @@ import config from "../config/index";
 import SecondaryHeader from "../styles/SecondaryHeader";
 
 const API_REGISTER_ENDPOINT = config.API_REGISTER_ENDPOINT || "";
-const token =
-  localStorage.getItem("ut") && JSON.parse(localStorage.getItem("ut")).token;
+const ut = localStorage.getItem("ut");
+const token = ut && JSON.parse(ut).token;
 
 const citySelectOptions = [
-  { value: "brooklyn", label: "Brooklyn" },
-  { value: "queens", label: "Queens" },
-  { value: "manhattan", label: "Manhattan" }
+  { value: "bedfordStuyvesant", label: "Bedford Stuyvesant" },
+  { value: "flatbush", label: "Flatbush" },
+  { value: "clintonHill", label: "Clinton Hill" }
 ];
 
 const specialtySelectOptions = [
@@ -38,7 +38,6 @@ const RegisterFormBoxStyle = styled(FormBoxStyle)`
 `;
 
 function StylistRegister(props) {
-  console.log(props);
   const customStyles = {
     input: styles => ({ ...styles, borderRadius: 16 }),
     container: styles => ({ ...styles, maxWidth: "20rem" }),
@@ -49,7 +48,7 @@ function StylistRegister(props) {
   };
 
   const [stylist, setStylist] = useState([]);
-  const [activeProfile, setActiveStylistProfile] = useState(false);
+  const [activeProfile, setActiveProfile] = useState(false);
   const [isSignedIn] = useState(typeof token === "string");
 
   useEffect(() => {
@@ -61,22 +60,20 @@ function StylistRegister(props) {
   const handleFormSubmit = event => {
     event.preventDefault();
 
-    const body = { ...stylist, token };
-
     fetch(API_REGISTER_ENDPOINT, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(stylist)
     })
       .then(response => response.json())
       .then(result => {
         setStylist(prevState => {
           return { ...prevState, ...result };
         });
-        setActiveStylistProfile(true);
+        setActiveProfile(true);
       });
   };
 
@@ -194,7 +191,7 @@ function StylistRegister(props) {
           </label>
           <label htmlFor="region">
             <span>
-              Step 2: What metro areas would you like to set appointments in?
+              Step 2: What cities would you like to set appointments in?
             </span>
             <Region />
           </label>

@@ -14,6 +14,7 @@ import StylistRegister from "./components/StylistRegister";
 import StylistProfile from "./components/StylistProfile";
 import Search from "./components/Search";
 import Signin from "./components/Signin";
+import Grid from "./components/Grid";
 import { Router } from "@reach/router";
 import FormBoxStyle from "./styles/Form";
 
@@ -117,6 +118,7 @@ function App() {
         <Router>
           <Search path="/home" />
           <Search path="/home/:isSignedIn/:name" />
+          <Grid path="/search/results/:zip" />
           <StylistRegister path="/stylists/register" />
           <StylistProfile path="/stylists/profile/:profileId" />
           <Signin path="/signin" />

@@ -2,7 +2,7 @@ export const setActiveTheme = theme => {
   const themes = {
     panAfrican: {
       main: "panAfrican",
-      bg: "linear-gradient(10deg, #AA0F20, #769075)",
+      bg: "linear-gradient(1deg, #AA0F20, #769075)",
       headerBg: "#769075",
       border: "4px solid #AA0F20",
       borderRadius: "8px",

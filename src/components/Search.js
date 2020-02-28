@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { Redirect } from "@reach/router";
 
 import ButtonStyle from "../styles/Button";
 import InputStyle from "../styles/Input";
@@ -93,7 +94,10 @@ const FlexLeftBoxStyle = styled(BoxStyle)`
   }
 `;
 
-function Home(props) {
+function Search(props) {
+  const [zip, setZip] = useState(null);
+  const [activeSearch, setActiveSearch] = useState(false);
+
   const SignedInNotification = () => {
     if (props.isSignedIn) {
       return <h1>{props.name}, you have successfully signed in!</h1>;
@@ -101,70 +105,95 @@ function Home(props) {
     return null;
   };
 
-  return (
-    <>
-      <SearchBoxStyle>
-        <SignedInNotification />
-        <SecondaryHeader>Hair Love, Anytime. Periodt.</SecondaryHeader>
-        <SearchInputWrapper>
-          <InputStyle type="text" placeholder="11435" />
-          <SearchInputIcon
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            width="30"
-            height="30"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fill="#eee"
-              d="M8 0c-2.761 0-5 2.239-5 5 0 5 5 11 5 11s5-6 5-11c0-2.761-2.239-5-5-5zM8 8.063c-1.691 0-3.063-1.371-3.063-3.063s1.371-3.063 3.063-3.063 3.063 1.371 3.063 3.063-1.371 3.063-3.063 3.063zM6.063 5c0-1.070 0.867-1.938 1.938-1.938s1.938 0.867 1.938 1.938c0 1.070-0.867 1.938-1.938 1.938s-1.938-0.867-1.938-1.938z"
-            ></path>
-          </SearchInputIcon>
-          <ButtonStyle>Find Artists Now</ButtonStyle>
-        </SearchInputWrapper>
-        <LinkStyle to="/stylists/register">Register as a Hair Artist</LinkStyle>
-      </SearchBoxStyle>
-      <FlexRightBoxStyle>
-        <SecondaryHeader>Natural Hair Artists on Demand</SecondaryHeader>
-        <p>
-          We get it. Managing hair care, self-love and everything in between can
-          be a challenge. You want a hair care professional that understands
-          your hair care needs and has a flexible schedule you can book on the
-          go.
-        </p>
-      </FlexRightBoxStyle>
-      <FlexLeftBoxStyle>
-        <SecondaryHeader>How It Works.</SecondaryHeader>
-        <ol>
-          <li>
-            Find an Artists in your area.
-            <p>
-              Our Hair Artists are screened and trained professionals who
-              prioritize the health, beauty and style of your hair equally.
-            </p>
-          </li>
-          <li>
-            Book the Artist of your choice at the time of your choice.
-            <p>
-              Our schedules are flexible and can be booked online. Check an
-              artists calendar to confirm availability. They come to your place
-              of business, home or salon near you. This allows you flexibility
-              and on demand service.
-            </p>
-          </li>
-          <li>
-            Get Ready To Look and Feel Great!
-            <p>
-              Our service provides convenience for special occasions, or fine
-              grain control over beauty rituals.
-              <ButtonStyle>Book Now</ButtonStyle>
-            </p>
-          </li>
-        </ol>
-      </FlexLeftBoxStyle>
-    </>
-  );
+  const onFindArtists = event => {
+    event.preventDefault();
+    console.log(zip);
+    if (zip) {
+      setActiveSearch(true);
+    }
+  };
+
+  if (activeSearch) {
+    return <Redirect noThrow to={`/search/results/${zip}`} />;
+  } else {
+    return (
+      <>
+        <SearchBoxStyle>
+          <SignedInNotification />
+          <form onSubmit={onFindArtists}>
+            <SecondaryHeader>Hair Love, Anytime. Periodt.</SecondaryHeader>
+            <SearchInputWrapper>
+              <InputStyle
+                type="text"
+                onChange={event => {
+                  setZip(event.target.value);
+                }}
+                value={zip || ""}
+                placeholder="11435"
+              />
+              <SearchInputIcon
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+                width="30"
+                height="30"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill="#eee"
+                  d="M8 0c-2.761 0-5 2.239-5 5 0 5 5 11 5 11s5-6 5-11c0-2.761-2.239-5-5-5zM8 8.063c-1.691 0-3.063-1.371-3.063-3.063s1.371-3.063 3.063-3.063 3.063 1.371 3.063 3.063-1.371 3.063-3.063 3.063zM6.063 5c0-1.070 0.867-1.938 1.938-1.938s1.938 0.867 1.938 1.938c0 1.070-0.867 1.938-1.938 1.938s-1.938-0.867-1.938-1.938z"
+                ></path>
+              </SearchInputIcon>
+              <ButtonStyle onClick={onFindArtists}>
+                Find Artists Now
+              </ButtonStyle>
+            </SearchInputWrapper>
+          </form>
+          <LinkStyle to="/stylists/register">
+            Register as a Hair Artist
+          </LinkStyle>
+        </SearchBoxStyle>
+        <FlexRightBoxStyle>
+          <SecondaryHeader>Natural Hair Artists on Demand</SecondaryHeader>
+          <p>
+            We get it. Managing hair care, self-love and everything in between
+            can be a challenge. You want a hair care professional that
+            understands your hair care needs and has a flexible schedule you can
+            book on the go.
+          </p>
+        </FlexRightBoxStyle>
+        <FlexLeftBoxStyle>
+          <SecondaryHeader>How It Works.</SecondaryHeader>
+          <ol>
+            <li>
+              Find an Artists in your area.
+              <p>
+                Our Hair Artists are screened and trained professionals who
+                prioritize the health, beauty and style of your hair equally.
+              </p>
+            </li>
+            <li>
+              Book the Artist of your choice at the time of your choice.
+              <p>
+                Our schedules are flexible and can be booked online. Check an
+                artists calendar to confirm availability. They come to your
+                place of business, home or salon near you. This allows you
+                flexibility and on demand service.
+              </p>
+            </li>
+            <li>
+              Get Ready To Look and Feel Great!
+              <p>
+                Our service provides convenience for special occasions, or fine
+                grain control over beauty rituals.
+                <ButtonStyle>Book Now</ButtonStyle>
+              </p>
+            </li>
+          </ol>
+        </FlexLeftBoxStyle>
+      </>
+    );
+  }
 }
 
-export default Home;
+export default Search;
