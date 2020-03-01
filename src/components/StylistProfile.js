@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import placeholderImg from "../images/silouttemohawkbraid.png";
 
 const ut = localStorage.getItem("ut");
 const token = ut && JSON.parse(ut).token;
@@ -7,9 +8,14 @@ const token = ut && JSON.parse(ut).token;
 const ProfileInfo = styled.div`
   display: flex;
   flex-flow: row;
+  padding: 0 8rem;
 `;
+
 const ProfileImage = styled.div`
-  flex: 1;
+  flex: 1 1;
+  background: #000;
+  padding: 1rem;
+  border-radius: 1rem;
 `;
 const ProfileList = styled.ul`
   flex: 2;
@@ -83,7 +89,7 @@ const StylistProfile = props => {
   return (
     <ProfileInfo>
       <ProfileImage>
-        <img src="/images/avatar@2x.png" alt="avatar" />
+        <img src={placeholderImg} alt="avatar" />
       </ProfileImage>
       <ProfileList>{ProfileListItems}</ProfileList>
 

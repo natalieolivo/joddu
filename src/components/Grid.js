@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { Link } from "@reach/router";
+import placeholderImg from "../images/silouttemohawkbraid.png";
 
 const ut = localStorage.getItem("ut");
 const token = ut && JSON.parse(ut).token;
 
-const GridHeader = styled.header``;
+const GridHeader = styled.h3``;
 
 const GridFilter = styled.section`
   display: flex;
@@ -20,14 +22,22 @@ const FlexGridStyle = styled.section`
   display: flex;
   flex-direction: row;
   flex-flow: wrap;
+  padding: 4rem;
 `;
 
 const GridBlock = styled.div`
   width: 180px;
-  padding: 8px;
+  padding: 1rem;
+  text-align: center;
+  line-height: 1.6rem;
 `;
 
-const GridWrapper = styled.div``;
+const GridWrapper = styled.div`
+  background: #000;
+  border: solid 1px #000;
+  border-radius: 1rem;
+  padding: 1rem;
+`;
 
 const GridImg = styled.img`
   border-radius: 16px;
@@ -136,13 +146,15 @@ function Grid(props) {
       </GridFilter> */}
 
       <FlexGridStyle>
-        {results.map(({ firstName }) => {
+        {results.map(({ firstName, lastName, _id }) => {
           return (
             <GridBlock>
               <GridWrapper>
-                {/* <GridImg alt="" src={image.src} /> */}
-                {firstName}
+                <Link to={`/stylists/profile/${_id}`}>
+                  <GridImg alt="" src={placeholderImg} />
+                </Link>
               </GridWrapper>
+              {firstName} {lastName}
             </GridBlock>
           );
         })}
