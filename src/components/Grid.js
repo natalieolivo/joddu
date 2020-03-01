@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "@reach/router";
 import placeholderImg from "../images/silouttemohawkbraid.png";
+import SecondaryHeader from "../styles/SecondaryHeader";
 
 const ut = localStorage.getItem("ut");
 const token = ut && JSON.parse(ut).token;
@@ -134,7 +135,7 @@ function Grid(props) {
 
   return (
     <>
-      <GridHeader>Hair Styles</GridHeader>
+      <SecondaryHeader>Natural Hair Artists in {props.zip}</SecondaryHeader>
       {/* <GridFilter>
         {filters.map((filter, index) => {
           return (
