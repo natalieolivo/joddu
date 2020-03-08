@@ -2,11 +2,15 @@ import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import { Redirect, navigate } from "@reach/router";
 
+import Notification from "../components/Notification";
+import Error from "../components/Error";
+
+import styled from "styled-components";
 import ButtonStyle from "../styles/Button";
 import FormBoxStyle from "../styles/Form";
 import InputStyle from "../styles/Input";
 import RadioStyle from "../styles/Radio";
-import styled from "styled-components";
+import { validateInput, hasErrors } from "../utils/validation";
 
 import config from "../config/index";
 import SecondaryHeader from "../styles/SecondaryHeader";
@@ -37,6 +41,15 @@ const RegisterFormBoxStyle = styled(FormBoxStyle)`
   }
 `;
 
+const ErrorNotification = notification => {
+  console.log(notification);
+  if (notification.errormsg !== "") {
+    window.scrollTo(0, 0);
+    return <Notification>{notification.errormsg}</Notification>;
+  }
+  return null;
+};
+
 function StylistRegister(props) {
   const customStyles = {
     input: styles => ({ ...styles, borderRadius: 16 }),
@@ -50,6 +63,17 @@ function StylistRegister(props) {
   const [stylist, setStylist] = useState([]);
   const [activeProfile, setActiveProfile] = useState(false);
   const [isSignedIn] = useState(typeof token === "string");
+  const [notif, setNotification] = useState("");
+
+  const errorDefaults = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    zip: ""
+  };
+
+  const [error, setError] = useState(errorDefaults);
 
   useEffect(() => {
     if (!isSignedIn) {
@@ -59,6 +83,12 @@ function StylistRegister(props) {
 
   const handleFormSubmit = event => {
     event.preventDefault();
+
+    if (hasErrors(error)) {
+      setNotification("Please correct the errors first.");
+      console.log("word up errors", error);
+      return;
+    }
 
     fetch(API_REGISTER_ENDPOINT, {
       method: "POST",
@@ -78,8 +108,6 @@ function StylistRegister(props) {
   };
 
   const setStylistInputData = event => {
-    console.log(event);
-
     let value = event.target ? event.target.value : "";
     let key = event.target ? event.target.name : "";
 
@@ -89,14 +117,28 @@ function StylistRegister(props) {
       return { ...prevState, ...postData };
     });
 
-    console.log("state", stylist);
-    console.log("post data", postData);
+    // reset errors
+    setError(prevState => {
+      return { ...prevState, [key]: "" };
+    });
+    setNotification("");
+
+    //set errors
+    if (!validateInput(value, key)) {
+      setError(prevState => {
+        console.log(key);
+        return {
+          ...prevState,
+          [key]:
+            key === "email"
+              ? "Whoops. Email is not valid."
+              : "Please enter a value."
+        };
+      });
+    }
   };
 
   const setStylistSelectData = (obj, attrs) => {
-    console.log(obj);
-    console.log(attrs);
-
     let value = obj ? obj : [];
     let key = attrs.name ? attrs.name : "";
 
@@ -105,9 +147,6 @@ function StylistRegister(props) {
     setStylist(prevState => {
       return { ...prevState, ...postData };
     });
-
-    console.log("state", stylist);
-    console.log("post data", postData);
   };
 
   const Region = () => (
@@ -138,96 +177,112 @@ function StylistRegister(props) {
     return <Redirect noThrow to={`/stylists/profile/${stylist._id}`} />;
   } else {
     return (
-      <RegisterFormBoxStyle>
-        <form onSubmit={handleFormSubmit}>
-          <SecondaryHeader>
-            Register as a Snatched Hair Artist in 3 easy steps:
-          </SecondaryHeader>
-          <span>Step 1: Enter your personal information:</span>
-          <label htmlFor="firstName">
-            <InputStyle
-              type="text"
-              name="firstName"
-              placeholder="first name"
-              onChange={setStylistInputData}
-              value={stylist.firstName || ""}
-            />
-          </label>
-          <label htmlFor="lastName">
-            <InputStyle
-              type="text"
-              name="lastName"
-              placeholder="last name"
-              onChange={setStylistInputData}
-              value={stylist.lastName || ""}
-            />
-          </label>
-          <label htmlFor="email">
-            <InputStyle
-              type="text"
-              name="email"
-              placeholder="email"
-              onChange={setStylistInputData}
-              value={stylist.email || ""}
-            />
-          </label>
-          <label htmlFor="phone">
-            <InputStyle
-              type="text"
-              name="phone"
-              placeholder="phone number"
-              onChange={setStylistInputData}
-              value={stylist.phone || ""}
-            />
-          </label>
-          <label htmlFor="zip">
-            <InputStyle
-              type="text"
-              name="zip"
-              placeholder="your home zip code"
-              onChange={setStylistInputData}
-              value={stylist.zip || ""}
-            />
-          </label>
-          <label htmlFor="region">
-            <span>
-              Step 2: What cities would you like to set appointments in?
-            </span>
-            <Region />
-          </label>
-          <label htmlFor="specialty">
-            <span>Step 3: What hair styles do you specialize in?</span>
-            <Specialty />
-          </label>
+      <>
+        {console.log(`render`, notif)}
+        <ErrorNotification errormsg={notif} />
+        <RegisterFormBoxStyle>
+          <form onSubmit={handleFormSubmit}>
+            <SecondaryHeader>
+              Register as a Snatched Hair Artist in 3 easy steps:
+            </SecondaryHeader>
+            <span>Step 1: Enter your personal information:</span>
+            <label htmlFor="firstName">
+              <InputStyle
+                type="text"
+                name="firstName"
+                placeholder="First Name"
+                onChange={setStylistInputData}
+                value={stylist.firstName || ""}
+              />
+              <Error error={error.firstName} />
+            </label>
+            <label htmlFor="lastName">
+              <InputStyle
+                type="text"
+                name="lastName"
+                placeholder="Last Name"
+                onChange={setStylistInputData}
+                value={stylist.lastName || ""}
+              />
+              <Error error={error.lastName} />
+            </label>
+            <label htmlFor="email">
+              <InputStyle
+                type="email"
+                name="email"
+                placeholder="Enter an email"
+                onChange={setStylistInputData}
+                value={stylist.email || ""}
+              />
+              <Error error={error.email} />
+            </label>
+            <label htmlFor="phone">
+              <InputStyle
+                type="text"
+                name="phone"
+                placeholder="Phone"
+                onChange={setStylistInputData}
+                value={stylist.phone || ""}
+              />
+              <Error error={error.phone} />
+            </label>
+            <label htmlFor="zip">
+              <InputStyle
+                type="text"
+                name="zip"
+                placeholder="Zip code"
+                onChange={setStylistInputData}
+                value={stylist.zip || ""}
+              />
+              <Error error={error.zip} />
+            </label>
+            <label htmlFor="region">
+              <span>
+                Step 2: What cities would you like to set appointments in?
+              </span>
+              <Region />
+              <Error error={error.region} />
+            </label>
+            <label htmlFor="specialty">
+              <span>Step 3: What hair styles do you specialize in?</span>
+              <Specialty />
+              <Error error={error.specialty} />
+            </label>
 
-          <section>
-            Do you own a car?
-            <label htmlFor="ownYes">
-              <RadioStyle id="ownYes" name="ownCar" type="radio" value="yes" />
-              Yes
+            <section>
+              Do you own a car?
+              <label htmlFor="ownYes">
+                <RadioStyle
+                  id="ownYes"
+                  name="ownCar"
+                  type="radio"
+                  value="yes"
+                />
+                Yes
+              </label>
+              <label htmlFor="ownNo">
+                <RadioStyle id="ownNo" name="ownCar" type="radio" value="yes" />
+                No
+              </label>
+            </section>
+            <label htmlFor="socialmedia">
+              <span>
+                Please provide a link or instagram handle where we can see your
+                work.
+              </span>
+              <InputStyle
+                type="text"
+                prefix="@"
+                name="socialmedia"
+                placeholder="Enter link here"
+                onChange={setStylistInputData}
+                value={stylist.socialmedia || ""}
+              />
             </label>
-            <label htmlFor="ownNo">
-              <RadioStyle id="ownNo" name="ownCar" type="radio" value="yes" />
-              No
-            </label>
-          </section>
-          <label htmlFor="socialmedia">
-            <span>
-              Please provide a link or instagram handle where we can see your
-              work.
-            </span>
-            <InputStyle
-              type="text"
-              prefix="@"
-              name="socialmedia"
-              placeholder="Enter link here"
-              onChange={setStylistInputData}
-              value={stylist.socialmedia || ""}
-            />
-          </label>
-          <ButtonStyle>Create my Stylist Profile</ButtonStyle>
-        </form>
-      </RegisterFormBoxStyle>
+            <ButtonStyle>Create my Stylist Profile</ButtonStyle>
+          </form>
+        </RegisterFormBoxStyle>
+      </>
     );
   }
 }

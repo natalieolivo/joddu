@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Link } from "@reach/router";
+import { Redirect, Link } from "@reach/router";
 import placeholderImg from "../images/silouttemohawkbraid.png";
 import SecondaryHeader from "../styles/SecondaryHeader";
 
@@ -60,7 +60,7 @@ function Grid(props) {
   const [results, setSearchResults] = useState([]);
 
   useEffect(() => {
-    if (props.zip && token) {
+    if (props.zip) {
       fetch(`http://localhost:3001/api/stylist/zip/${props.zip}`, {
         headers: {
           "Content-Type": "application/json",
@@ -75,6 +75,39 @@ function Grid(props) {
     }
   }, [props.zip]);
 
+  if (token) {
+    return (
+      <>
+        <SecondaryHeader>Natural Hair Artists in {props.zip}</SecondaryHeader>
+        {/* <GridFilter>
+          {filters.map((filter, index) => {
+            return (
+              <GridFilterBlock key={index} onClick={filterResults}>
+                {filter.label}
+              </GridFilterBlock>
+            );
+          })}
+        </GridFilter> */}
+
+        <FlexGridStyle>
+          {results.map(({ firstName, lastName, _id }) => {
+            return (
+              <GridBlock>
+                <GridWrapper>
+                  <Link to={`/stylists/profile/${_id}`}>
+                    <GridImg alt="" src={placeholderImg} />
+                  </Link>
+                </GridWrapper>
+                {firstName} {lastName}
+              </GridBlock>
+            );
+          })}
+        </FlexGridStyle>
+      </>
+    );
+  } else {
+    return <Redirect noThrow to="/signin" />;
+  }
   // const [styles, setStyles] = useState([
   //   {
   //     style_type: "locks",
@@ -132,36 +165,6 @@ function Grid(props) {
   //   ]);
   //   console.log(styles);
   // };
-
-  return (
-    <>
-      <SecondaryHeader>Natural Hair Artists in {props.zip}</SecondaryHeader>
-      {/* <GridFilter>
-        {filters.map((filter, index) => {
-          return (
-            <GridFilterBlock key={index} onClick={filterResults}>
-              {filter.label}
-            </GridFilterBlock>
-          );
-        })}
-      </GridFilter> */}
-
-      <FlexGridStyle>
-        {results.map(({ firstName, lastName, _id }) => {
-          return (
-            <GridBlock>
-              <GridWrapper>
-                <Link to={`/stylists/profile/${_id}`}>
-                  <GridImg alt="" src={placeholderImg} />
-                </Link>
-              </GridWrapper>
-              {firstName} {lastName}
-            </GridBlock>
-          );
-        })}
-      </FlexGridStyle>
-    </>
-  );
 }
 
 export default Grid;

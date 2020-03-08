@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Redirect } from "@reach/router";
+import Error from "../components/Error";
 
 import ButtonStyle from "../styles/Button";
 import InputStyle from "../styles/Input";
 import { LinkStyle } from "../styles/Link";
 import SecondaryHeader from "../styles/SecondaryHeader";
+import { validZip } from "../utils/validation";
+import Notification from "../components/Notification";
 
 import WomanWithCombImg from "../images/womanwithcomb.png";
 import HowItWorksImg from "../images/howitworks.png";
@@ -94,22 +97,31 @@ const FlexLeftBoxStyle = styled(BoxStyle)`
   }
 `;
 
+const SignedInNotification = props => {
+  if (props.isSignedIn) {
+    return (
+      <Notification>
+        {props.name}, you have successfully signed in!
+      </Notification>
+    );
+  }
+  return null;
+};
+
 function Search(props) {
   const [zip, setZip] = useState(null);
   const [activeSearch, setActiveSearch] = useState(false);
-
-  const SignedInNotification = () => {
-    if (props.isSignedIn) {
-      return <h1>{props.name}, you have successfully signed in!</h1>;
-    }
-    return null;
-  };
+  const [error, setError] = useState({
+    message: ""
+  });
 
   const onFindArtists = event => {
     event.preventDefault();
-    console.log(zip);
-    if (zip) {
+    if (validZip(zip)) {
       setActiveSearch(true);
+      setError({ message: "" });
+    } else {
+      setError({ message: "Enter a zip code value." });
     }
   };
 
@@ -119,7 +131,11 @@ function Search(props) {
     return (
       <>
         <SearchBoxStyle>
-          <SignedInNotification />
+          <SignedInNotification
+            isSignedIn={props.isSignedIn}
+            name={props.name}
+          />
+
           <form onSubmit={onFindArtists}>
             <SecondaryHeader>Hair Love, Anytime. Periodt.</SecondaryHeader>
             <SearchInputWrapper>
@@ -127,10 +143,12 @@ function Search(props) {
                 type="text"
                 onChange={event => {
                   setZip(event.target.value);
+                  setError({ message: "" });
                 }}
                 value={zip || ""}
                 placeholder="11435"
               />
+              <Error error={error.message}></Error>
               <SearchInputIcon
                 version="1.1"
                 xmlns="http://www.w3.org/2000/svg"
