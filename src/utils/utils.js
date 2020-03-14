@@ -22,7 +22,7 @@ export const setActiveTheme = theme => {
       primaryBtn: "#FF8E88",
       navScrollBg: "#df615a",
       inputBg: "#fff",
-      boxbg: "#fff"
+      boxbg: "#df615a"
     }
   };
 
