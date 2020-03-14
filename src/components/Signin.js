@@ -40,7 +40,8 @@ function Signin() {
         console.log(`Create Account`, payload);
         localStorage.setItem("ut", JSON.stringify(payload));
         setInitialSignIn(true);
-      });
+      })
+      .catch(e => console.error(e));
   };
 
   const onSignIn = event => {
