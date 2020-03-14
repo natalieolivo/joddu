@@ -42,7 +42,8 @@ const FlexRightBoxStyle = styled(BoxStyle)`
   flex-direction: column;
   justify-content: flex-start;
   margin-top: 2rem;
-  background: #910717 url(${WomanWithCombImg}) no-repeat right 2rem;
+  background: ${props => props.theme.boxbg} url(${WomanWithCombImg}) no-repeat
+    right 2rem;
   min-height: 40rem;
 
   p {

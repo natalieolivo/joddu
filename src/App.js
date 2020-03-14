@@ -23,7 +23,7 @@ const Header = styled.header`
   top: 0;
   z-index: 1;
   width: 100%;
-  border-bottom: solid 1px #979797;
+  border-bottom: solid 1px ${props => props.theme.headerBorder};
   margin-bottom: 1rem;
 `;
 
@@ -38,7 +38,7 @@ const AppStyle = styled.div`
   color: #000;
 
   &.scroll-state-start nav {
-    background: #5f735e;
+    background: ${props => props.theme.navScrollBg};
     transition: all 300ms linear;
   }
 `;
@@ -113,7 +113,7 @@ function App() {
     <ThemeProvider theme={activeTheme}>
       <AppStyle className="App" ref={appRef}>
         <Header>
-          <Menu ref={appRef} />
+          <Menu ref={appRef} theme={activeTheme} />
         </Header>
         <Router>
           <Search path="/home" />
