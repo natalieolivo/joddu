@@ -18,6 +18,7 @@ function Signin() {
   const [createAccountVisible, setCreateAccountVisible] = useState(false);
   const token =
     localStorage.getItem("ut") && JSON.parse(localStorage.getItem("ut")).token;
+  const [pl, setPl] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -38,8 +39,9 @@ function Signin() {
       .then(response => response.json())
       .then(payload => {
         console.log(`Create Account`, payload);
-        localStorage.setItem("ut", JSON.stringify(payload));
-        setInitialSignIn(true);
+        setPl(payload);
+        //localStorage.setItem("ut", JSON.stringify(payload));
+        //setInitialSignIn(true);
       })
       .catch(e => console.error(e));
   };
@@ -85,6 +87,7 @@ function Signin() {
   const CreateAccount = () => {
     return (
       <FormBoxStyle>
+        <pre>{JSON.stringify(pl)}</pre>
         <form onSubmit={onCreateAccount}>
           <label htmlFor="firstName">
             <InputStyle
@@ -153,7 +156,6 @@ function Signin() {
 
   const SigninView = () => {
     if (initialSignIn) {
-      //TODO: Redirect to the last location visited?
       return <Redirect noThrow to={`/home/signedin/${user.firstName}`} />;
     } else if (isSignedIn) {
       return <Redirect noThrow to={`/home`} />;
