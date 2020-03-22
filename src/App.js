@@ -134,8 +134,11 @@ function App() {
 
   useEffect(() => {
     if (typeof getActiveTheme().main !== "string") {
+      const themeList = ["panAfrican", "neutral"];
+      const randIndex = Math.floor(Math.random() * Math.floor(2)); // 0 || 1
+      console.log("Theme not send, get random", themeList[randIndex]);
       // if not set, default theme after first render
-      setActiveTheme("panAfrican");
+      setActiveTheme(themeList[randIndex]);
       setThemeState(getActiveTheme());
     } else {
       setThemeState(getActiveTheme());
