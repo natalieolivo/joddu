@@ -17,7 +17,6 @@ function Signin() {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [initialSignIn, setInitialSignIn] = useState(false);
   const [createAccountVisible, setCreateAccountVisible] = useState(false);
-  const [pl, setPl] = useState(false);
   const [error, setError] = useState({ message: "" });
 
   const token =
@@ -50,7 +49,7 @@ function Signin() {
         console.error(e);
 
         setError({
-          message: e.message
+          message: `${e.message}: ${AUTH_SIGNUP_ENDPOINT}`
         });
       });
   };
