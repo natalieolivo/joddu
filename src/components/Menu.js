@@ -48,7 +48,7 @@ const ListItems = styled.ul`
   list-style: none;
 `;
 
-const Logo = styled.div`
+const Logo = styled.span`
   color: #000;
   font-size: 1.2rem;
   font-weight: 900;

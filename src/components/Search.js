@@ -13,6 +13,9 @@ import Notification from "../components/Notification";
 import WomanWithCombImg from "../images/womanwithcomb.png";
 import HowItWorksImg from "../images/howitworks.png";
 
+const ut = localStorage.getItem("ut");
+const token = ut && JSON.parse(ut).token;
+
 const SearchInputWrapper = styled.section`
   position: relative;
   display: flex;
@@ -126,7 +129,7 @@ function Search(props) {
     }
   };
 
-  if (activeSearch) {
+  if (activeSearch && token) {
     return <Redirect noThrow to={`/search/results/${zip}`} />;
   } else {
     return (

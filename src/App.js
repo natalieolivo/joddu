@@ -37,9 +37,16 @@ const AppStyle = styled.div`
   font-size: calc(10px + 2vmin);
   color: #000;
 
+  &.scroll-state-start svg {
+    transform: ${props => props.theme.transform};
+  }
+
   &.scroll-state-start nav {
     background: ${props => props.theme.navScrollBg};
     transition: all 300ms linear;
+    span {
+      padding-left: 4.4rem;
+    }
   }
 `;
 

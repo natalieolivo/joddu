@@ -31,6 +31,9 @@ const GridBlock = styled.div`
   padding: 1rem;
   text-align: center;
   line-height: 1.6rem;
+  a {
+    text-decoration: none;
+  }
 `;
 
 const GridWrapper = styled.div`
@@ -38,11 +41,23 @@ const GridWrapper = styled.div`
   border: solid 1px #000;
   border-radius: 1rem;
   padding: 1rem;
+  color: #fff;
+
+  span {
+    text-transform: capitalize;
+    display: inline-block;
+    margin-right: 0.4rem;
+  }
 `;
 
 const GridImg = styled.img`
   border-radius: 16px;
   width: 100%;
+`;
+
+const ProfileListInfo = styled.ul`
+  list-style: none;
+  padding: 0;
 `;
 
 // const [filters] = useState([
@@ -90,15 +105,25 @@ function Grid(props) {
         </GridFilter> */}
 
         <FlexGridStyle>
-          {results.map(({ firstName, lastName, _id }) => {
+          {results.map(({ firstName, lastName, _id, region, specialty }) => {
             return (
               <GridBlock>
-                <GridWrapper>
-                  <Link to={`/stylists/profile/${_id}`}>
+                <Link to={`/stylists/profile/${_id}`}>
+                  <GridWrapper>
                     <GridImg alt="" src={placeholderImg} />
-                  </Link>
-                </GridWrapper>
-                {firstName} {lastName}
+
+                    <span>{firstName}</span>
+                    <span>{lastName}</span>
+                    <ProfileListInfo>
+                      {region.map(({ label }) => {
+                        return <li>{label}</li>;
+                      })}
+                      {specialty.map(({ label }) => {
+                        return <li>{label}</li>;
+                      })}
+                    </ProfileListInfo>
+                  </GridWrapper>
+                </Link>
               </GridBlock>
             );
           })}
