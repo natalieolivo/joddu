@@ -48,8 +48,9 @@ function Signin() {
       })
       .catch(e => {
         console.error(e);
+
         setError({
-          message: "Whoops. That was unexpected. Can you try again?"
+          message: e.message
         });
       });
   };
