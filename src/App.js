@@ -15,8 +15,13 @@ import StylistProfile from "./components/StylistProfile";
 import Search from "./components/Search";
 import Signin from "./components/Signin";
 import Grid from "./components/Grid";
-import { Router } from "@reach/router";
+import { Router, navigate } from "@reach/router";
 import FormBoxStyle from "./styles/Form";
+import config from "./config/index";
+
+const AUTH_SIGNOUT_ENDPOINT = `http://localhost:3001/api/signout`;
+const ut = localStorage.getItem("ut");
+const token = ut && JSON.parse(ut).token;
 
 const Header = styled.header`
   position: sticky;
@@ -52,7 +57,28 @@ const AppStyle = styled.div`
 
 function App() {
   const [activeTheme, setThemeState] = useState({});
+
   const appRef = useRef(null);
+  const onSignout = () => {
+    console.log("logout");
+    fetch(AUTH_SIGNOUT_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log("logout");
+        // remove stored token
+        localStorage.clear();
+        navigate(`/home/signedOut`);
+      })
+      .catch(e => {
+        console.error(e);
+      });
+  };
 
   useEffect(() => {
     const element = appRef.current;
@@ -120,10 +146,11 @@ function App() {
     <ThemeProvider theme={activeTheme}>
       <AppStyle className="App" ref={appRef}>
         <Header>
-          <Menu ref={appRef} theme={activeTheme} />
+          <Menu ref={appRef} theme={activeTheme} signout={onSignout} />
         </Header>
         <Router>
           <Search path="/home" />
+          <Search path="/home/:signedOutAction" />
           <Search path="/home/:isSignedIn/:name" />
           <Grid path="/search/results/:zip" />
           <StylistRegister path="/stylists/register" />

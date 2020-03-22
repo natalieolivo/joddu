@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "@reach/router";
-import config from "../config";
 import LogoGraphic from "./LogoGraphic";
-
-const AUTH_SIGNOUT_ENDPOINT = config.AUTH_SIGNOUT_ENDPOINT || "";
 
 const Nav = styled.nav`
   display: flex;
@@ -115,16 +112,7 @@ const Menu = React.forwardRef((props, ref) => {
   };
 
   const onSignout = () => {
-    // remove stored token
-    localStorage.clear();
-
-    // TODO: Add message indicating signout
-    fetch(AUTH_SIGNOUT_ENDPOINT)
-      .then(response => response.json())
-      .then(json => console.log("logged out", json))
-      .catch(e => {
-        console.log(e);
-      });
+    props.signout();
   };
 
   const HeaderLinks = () => {

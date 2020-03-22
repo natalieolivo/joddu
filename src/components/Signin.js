@@ -19,8 +19,8 @@ function Signin() {
   const [createAccountVisible, setCreateAccountVisible] = useState(false);
   const [error, setError] = useState({ message: "" });
 
-  const token =
-    localStorage.getItem("ut") && JSON.parse(localStorage.getItem("ut")).token;
+  const ut = localStorage.getItem("ut");
+  const token = ut && JSON.parse(ut).token;
 
   useEffect(() => {
     if (token) {

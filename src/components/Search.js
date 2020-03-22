@@ -102,6 +102,7 @@ const FlexLeftBoxStyle = styled(BoxStyle)`
 `;
 
 const SignedInNotification = props => {
+  console.log("props:", props);
   if (props.isSignedIn) {
     return (
       <Notification>
@@ -109,6 +110,11 @@ const SignedInNotification = props => {
       </Notification>
     );
   }
+
+  if (props.signedOut) {
+    return <Notification>You have successfully signed out!</Notification>;
+  }
+
   return null;
 };
 
@@ -137,11 +143,12 @@ function Search(props) {
         <SearchBoxStyle>
           <SignedInNotification
             isSignedIn={props.isSignedIn}
+            signedOutAction={props.signedOutAction}
             name={props.name}
           />
 
           <form onSubmit={onFindArtists}>
-            <SecondaryHeader>Hair Love, Anytime. Periodt.</SecondaryHeader>
+            <SecondaryHeader>Hair Love, Anytime. Anywhere.</SecondaryHeader>
             <SearchInputWrapper>
               <InputStyle
                 type="text"
