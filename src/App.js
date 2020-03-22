@@ -19,7 +19,7 @@ import { Router, navigate } from "@reach/router";
 import FormBoxStyle from "./styles/Form";
 import config from "./config/index";
 
-const AUTH_SIGNOUT_ENDPOINT = `http://localhost:3001/api/signout`;
+const AUTH_SIGNOUT_ENDPOINT = config.AUTH_SIGNOUT_ENDPOINT || "";
 const ut = localStorage.getItem("ut");
 const token = ut && JSON.parse(ut).token;
 
