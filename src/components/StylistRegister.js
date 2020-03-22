@@ -178,7 +178,6 @@ function StylistRegister(props) {
   } else {
     return (
       <>
-        {console.log(`render`, notif)}
         <ErrorNotification errormsg={notif} />
         <RegisterFormBoxStyle>
           <form onSubmit={handleFormSubmit}>

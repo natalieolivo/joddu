@@ -4,6 +4,7 @@ import { Redirect } from "@reach/router";
 import FormBoxStyle from "../styles/Form";
 import InputStyle from "../styles/Input";
 import ButtonStyle from "../styles/Button";
+import Error from "../components/Error";
 import { HandlerLinkStyle } from "../styles/Link";
 
 import config from "../config/index";
@@ -16,9 +17,11 @@ function Signin() {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [initialSignIn, setInitialSignIn] = useState(false);
   const [createAccountVisible, setCreateAccountVisible] = useState(false);
+  const [pl, setPl] = useState(false);
+  const [error, setError] = useState({ message: "" });
+
   const token =
     localStorage.getItem("ut") && JSON.parse(localStorage.getItem("ut")).token;
-  const [pl, setPl] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -37,13 +40,18 @@ function Signin() {
       body: JSON.stringify(user)
     })
       .then(response => response.json())
-      .then(payload => {
-        console.log(`Create Account`, payload);
-        setPl(payload);
-        //localStorage.setItem("ut", JSON.stringify(payload));
-        //setInitialSignIn(true);
+      .then(response => {
+        console.log(`Create Account`, response, response.code);
+
+        localStorage.setItem("ut", JSON.stringify(response));
+        setInitialSignIn(true);
       })
-      .catch(e => console.error(e));
+      .catch(e => {
+        console.error(e);
+        setError({
+          message: "Whoops. That was unexpected. Can you try again?"
+        });
+      });
   };
 
   const onSignIn = event => {
@@ -72,6 +80,8 @@ function Signin() {
     let value = event.target.value;
     let name = event.target.name;
 
+    setError({ message: "" });
+
     setUser(prevState => {
       const newState = { [name]: value };
       return { ...prevState, ...newState };
@@ -87,7 +97,8 @@ function Signin() {
   const CreateAccount = () => {
     return (
       <FormBoxStyle>
-        <pre>{JSON.stringify(pl)}</pre>
+        <Error error={error.message}></Error>
+        {/* <pre>{JSON.parse(pl)}</pre> */}
         <form onSubmit={onCreateAccount}>
           <label htmlFor="firstName">
             <InputStyle
