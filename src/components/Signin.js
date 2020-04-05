@@ -4,15 +4,14 @@ import { Redirect } from "@reach/router";
 import FormBoxStyle from "../styles/Form";
 import InputStyle from "../styles/Input";
 import ButtonStyle from "../styles/Button";
-import Error from "../components/Error";
+import Error from "./ErrorNotification";
 import { HandlerLinkStyle } from "../styles/Link";
 
 import config from "../config/index";
 
-const AUTH_SIGNIN_ENDPOINT = config.AUTH_SIGNIN_ENDPOINT || "";
 const AUTH_SIGNUP_ENDPOINT = config.AUTH_SIGNUP_ENDPOINT || "";
 
-function Signin() {
+function Signin(props) {
   const [user, setUser] = useState([]);
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [initialSignIn, setInitialSignIn] = useState(false);
@@ -56,22 +55,7 @@ function Signin() {
 
   const onSignIn = event => {
     event.preventDefault();
-
-    fetch(AUTH_SIGNIN_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json"
-      },
-      body: JSON.stringify({
-        email: user.email,
-        password: user.password
-      })
-    })
-      .then(response => response.json())
-      .then(payload => {
-        localStorage.setItem("ut", JSON.stringify(payload));
-        setIsSignedIn(true);
-      });
+    props.signin(user);
   };
 
   const onFieldChange = event => {

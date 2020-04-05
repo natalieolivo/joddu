@@ -3,7 +3,7 @@ import Select from "react-select";
 import { Redirect, navigate } from "@reach/router";
 
 import Notification from "../components/Notification";
-import Error from "../components/Error";
+import Error from "./ErrorNotification";
 
 import styled from "styled-components";
 import ButtonStyle from "../styles/Button";
@@ -86,7 +86,6 @@ function StylistRegister(props) {
 
     if (hasErrors(error)) {
       setNotification("Please correct the errors first.");
-      console.log("word up errors", error);
       return;
     }
 

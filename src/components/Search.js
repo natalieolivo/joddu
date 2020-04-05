@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Redirect } from "@reach/router";
-import Error from "../components/Error";
+import Error from "./ErrorNotification";
 
 import ButtonStyle from "../styles/Button";
 import InputStyle from "../styles/Input";

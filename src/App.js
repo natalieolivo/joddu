@@ -17,8 +17,10 @@ import Signin from "./components/Signin";
 import Grid from "./components/Grid";
 import { Router, navigate } from "@reach/router";
 import FormBoxStyle from "./styles/Form";
+import Error from "./components/Error";
 import config from "./config/index";
 
+const AUTH_SIGNIN_ENDPOINT = config.AUTH_SIGNIN_ENDPOINT || "";
 const AUTH_SIGNOUT_ENDPOINT = config.AUTH_SIGNOUT_ENDPOINT || "";
 const ut = localStorage.getItem("ut");
 const token = ut && JSON.parse(ut).token;
@@ -57,10 +59,28 @@ const AppStyle = styled.div`
 
 function App() {
   const [activeTheme, setThemeState] = useState({});
+  const [isSignedIn, setIsSignedIn] = useState(token ? true : false);
 
   const appRef = useRef(null);
+  const onSignin = user => {
+    fetch(AUTH_SIGNIN_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify({
+        email: user.email,
+        password: user.password
+      })
+    })
+      .then(response => response.json())
+      .then(payload => {
+        localStorage.setItem("ut", JSON.stringify(payload));
+        setIsSignedIn(true);
+      });
+  };
+
   const onSignout = () => {
-    console.log("logout");
     fetch(AUTH_SIGNOUT_ENDPOINT, {
       method: "POST",
       headers: {
@@ -70,7 +90,7 @@ function App() {
     })
       .then(response => response.json())
       .then(response => {
-        console.log("logout");
+        setIsSignedIn(false);
         // remove stored token
         localStorage.clear();
         navigate(`/home/signedOut`);
@@ -136,7 +156,7 @@ function App() {
     if (typeof getActiveTheme().main !== "string") {
       const themeList = ["panAfrican", "neutral"];
       const randIndex = Math.floor(Math.random() * Math.floor(2)); // 0 || 1
-      console.log("Theme not send, get random", themeList[randIndex]);
+      console.log("Theme not set, get random", themeList[randIndex]);
       // if not set, default theme after first render
       setActiveTheme(themeList[randIndex]);
       setThemeState(getActiveTheme());
@@ -149,16 +169,23 @@ function App() {
     <ThemeProvider theme={activeTheme}>
       <AppStyle className="App" ref={appRef}>
         <Header>
-          <Menu ref={appRef} theme={activeTheme} signout={onSignout} />
+          <Menu
+            ref={appRef}
+            theme={activeTheme}
+            signout={onSignout}
+            isSignedIn={isSignedIn}
+          />
         </Header>
         <Router>
+          <Search path="/" />
           <Search path="/home" />
           <Search path="/home/:signedOutAction" />
           <Search path="/home/:isSignedIn/:name" />
           <Grid path="/search/results/:zip" />
           <StylistRegister path="/stylists/register" />
           <StylistProfile path="/stylists/profile/:profileId" />
-          <Signin path="/signin" />
+          <Signin path="/signin" signin={onSignin} />
+          <Error path="/*" />
           <ThemeManager path="/themes" />
         </Router>
       </AppStyle>

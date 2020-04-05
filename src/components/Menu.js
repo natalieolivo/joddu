@@ -69,7 +69,6 @@ const userInfo =
   localStorage.getItem("ut") && JSON.parse(localStorage.getItem("ut"));
 
 const Menu = React.forwardRef((props, ref) => {
-  console.log(ref);
   let [menuVisible, setMenuVisible] = useState(false);
 
   const menuDisplay = () => {
@@ -116,8 +115,10 @@ const Menu = React.forwardRef((props, ref) => {
   };
 
   const HeaderLinks = () => {
-    if (userInfo && userInfo.token) {
-      return <span onClick={onSignout}>Sign Out ({userInfo.name})</span>;
+    if (props.isSignedIn) {
+      return (
+        <span onClick={onSignout}>Sign Out ({userInfo && userInfo.name})</span>
+      );
     } else {
       return <Link to="/signin">Sign In</Link>;
     }

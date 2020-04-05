@@ -1,12 +1,14 @@
 import React from "react";
-import ErrorStyle from "../styles/Error";
+import styled from "styled-components";
 
-const Error = props => {
-  if (props.error) {
-    return <ErrorStyle>{props.error}</ErrorStyle>;
-  } else {
-    return null;
-  }
+const ErrorStyle = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 4rem auto;
+`;
+
+const Error = () => {
+  return <ErrorStyle>Error</ErrorStyle>;
 };
 
 export default Error;
