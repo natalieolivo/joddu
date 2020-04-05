@@ -1,5 +1,5 @@
 import { merge } from "lodash";
-const env = process.env.NODE_ENV || "local";
+const env = process.env.NODE_ENV || "development";
 const baseConfig = {
   env,
   isLocal: env === "local",
@@ -15,7 +15,7 @@ switch (env) {
     envConfig = require("./local").config;
     break;
   case "development":
-    envConfig = require("./local").config;
+    envConfig = require("./dev").config;
     break;
   case "test":
   case "testing":
