@@ -66,7 +66,8 @@ function App() {
     fetch(AUTH_SIGNIN_ENDPOINT, {
       method: "POST",
       headers: {
-        "Content-type": "application/json"
+        "Content-type": "application/json",
+        "Access-Control-Allow-Origin": "*"
       },
       body: JSON.stringify({
         email: user.email,
@@ -85,6 +86,7 @@ function App() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
         Authorization: `Bearer ${token}`
       }
     })
