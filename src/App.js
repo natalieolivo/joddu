@@ -67,7 +67,7 @@ function App() {
       method: "POST",
       headers: {
         "Content-type": "application/json",
-        "Access-Control-Allow-Origin": "*"
+        mode: "no-cors"
       },
       body: JSON.stringify({
         email: user.email,
@@ -86,7 +86,7 @@ function App() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+        mode: "no-cors",
         Authorization: `Bearer ${token}`
       }
     })
@@ -156,11 +156,7 @@ function App() {
 
   useEffect(() => {
     if (typeof getActiveTheme().main !== "string") {
-      const themeList = ["panAfrican", "neutral"];
-      const randIndex = Math.floor(Math.random() * Math.floor(2)); // 0 || 1
-      console.log("Theme not set, get random", themeList[randIndex]);
-      // if not set, default theme after first render
-      setActiveTheme(themeList[randIndex]);
+      setActiveTheme("panAfrican");
       setThemeState(getActiveTheme());
     } else {
       setThemeState(getActiveTheme());
