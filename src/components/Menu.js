@@ -130,13 +130,8 @@ const Menu = React.forwardRef((props, ref) => {
     }
   };
 
-  const log = () => {
-    console.log(`menu rendering`, props);
-  };
-
   return (
     <Nav>
-      {log()}
       {/* <MenuButton setMenuDisplay={setMenuDisplay} /> */}
       <Link to="/home">
         <LogoGraphic graphic={props} />
