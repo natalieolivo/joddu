@@ -116,9 +116,7 @@ const Menu = React.forwardRef((props, ref) => {
 
   const HeaderLinks = () => {
     if (props.isSignedIn) {
-      return (
-        <span onClick={onSignout}>Sign Out ({userInfo && userInfo.name})</span>
-      );
+      return <span onClick={onSignout}>Sign Out ({props.name})</span>;
     } else {
       return <Link to="/signin">Sign In</Link>;
     }
@@ -132,8 +130,13 @@ const Menu = React.forwardRef((props, ref) => {
     }
   };
 
+  const log = () => {
+    console.log(`menu rendering`, props);
+  };
+
   return (
     <Nav>
+      {log()}
       {/* <MenuButton setMenuDisplay={setMenuDisplay} /> */}
       <Link to="/home">
         <LogoGraphic graphic={props} />

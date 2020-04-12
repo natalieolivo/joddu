@@ -22,8 +22,8 @@ import config from "./config/index";
 
 const AUTH_SIGNIN_ENDPOINT = config.AUTH_SIGNIN_ENDPOINT || "";
 const AUTH_SIGNOUT_ENDPOINT = config.AUTH_SIGNOUT_ENDPOINT || "";
-const ut = localStorage.getItem("ut");
-const token = ut && JSON.parse(ut).token;
+const ut = JSON.parse(localStorage.getItem("ut"));
+const token = ut && ut.token;
 
 const Header = styled.header`
   position: sticky;
@@ -60,6 +60,7 @@ const AppStyle = styled.div`
 function App() {
   const [activeTheme, setThemeState] = useState({});
   const [isSignedIn, setIsSignedIn] = useState(token ? true : false);
+  const [displayName, setDisplayName] = useState(ut ? ut.name : "");
 
   const appRef = useRef(null);
   const onSignin = user => {
@@ -67,7 +68,7 @@ function App() {
       method: "POST",
       headers: {
         "Content-type": "application/json",
-        mode: "no-cors"
+        mode: "cors"
       },
       body: JSON.stringify({
         email: user.email,
@@ -77,6 +78,8 @@ function App() {
       .then(response => response.json())
       .then(payload => {
         localStorage.setItem("ut", JSON.stringify(payload));
+        const name = JSON.parse(localStorage.getItem("ut")).name;
+        setDisplayName(name);
         setIsSignedIn(true);
       });
   };
@@ -86,7 +89,7 @@ function App() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        mode: "no-cors",
+        mode: "cors",
         Authorization: `Bearer ${token}`
       }
     })
@@ -172,6 +175,7 @@ function App() {
             theme={activeTheme}
             signout={onSignout}
             isSignedIn={isSignedIn}
+            name={displayName}
           />
         </Header>
         <Router>
