@@ -135,7 +135,7 @@ function Search(props) {
     }
   };
 
-  if (activeSearch && token) {
+  if (activeSearch) {
     return <Redirect noThrow to={`/search/results/${zip}`} />;
   } else {
     return (
