@@ -65,9 +65,6 @@ const HeaderLinkList = styled.section`
   }
 `;
 
-const userInfo =
-  localStorage.getItem("ut") && JSON.parse(localStorage.getItem("ut"));
-
 const Menu = React.forwardRef((props, ref) => {
   let [menuVisible, setMenuVisible] = useState(false);
 
@@ -114,9 +111,16 @@ const Menu = React.forwardRef((props, ref) => {
     props.signout();
   };
 
+  const getUserProfile = () => {};
+
   const HeaderLinks = () => {
     if (props.isSignedIn) {
-      return <span onClick={onSignout}>Sign Out ({props.name})</span>;
+      return (
+        <>
+          <span onClick={onSignout}>Sign Out</span>
+          <span onClick={getUserProfile}>({props.name})</span>
+        </>
+      );
     } else {
       return <Link to="/signin">Sign In</Link>;
     }

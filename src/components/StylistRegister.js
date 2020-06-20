@@ -32,6 +32,7 @@ const specialtySelectOptions = [
   { value: "barber cuts", label: "Barber Cuts" },
   { value: "crochet", label: "Crochet" }
 ];
+const hasProfileConfirmedSetting = false;
 
 let postData = {};
 
@@ -171,8 +172,9 @@ function StylistRegister(props) {
       onChange={value => setStylistSelectData(value, { name: "specialty" })}
     />
   );
-
-  if (activeProfile === true) {
+  if (!hasProfileConfirmedSetting) {
+    return <h1>Thanks but your profile needs to be approved!</h1>;
+  } else if (activeProfile === true) {
     return <Redirect noThrow to={`/stylists/profile/${stylist._id}`} />;
   } else {
     return (

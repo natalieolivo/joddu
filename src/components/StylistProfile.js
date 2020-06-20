@@ -7,9 +7,9 @@ import ButtonStyle from "../styles/Button";
 import InputStyle from "../styles/Input";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import FormBoxStyle from "../styles/Form";
 
 const API_ARTIST_PROFILE_ENDPOINT = config.API_ARTIST_PROFILE_ENDPOINT || "";
+const hasProfileConfirmedSetting = false;
 
 const ut = localStorage.getItem("ut");
 const token = ut && JSON.parse(ut).token;
@@ -102,7 +102,7 @@ const StylistProfile = props => {
     );
   });
 
-  return (
+  return hasProfileConfirmedSetting ? (
     <ProfileInfo>
       <ProfileImage>
         <img src={placeholderImg} alt="avatar" />
@@ -121,6 +121,8 @@ const StylistProfile = props => {
                     <code>{JSON.stringify(this.state, null, 4)}</code>
                 </pre> */}
     </ProfileInfo>
+  ) : (
+    <h1>This profile has not been confirmed.</h1>
   );
 };
 
