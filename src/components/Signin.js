@@ -42,6 +42,7 @@ function Signin(props) {
         console.log(`Create Account`, response, response.code);
 
         localStorage.setItem("ut", JSON.stringify(response));
+        // TODO: if they came from registration take them back
         setInitialSignIn(true);
       })
       .catch(e => {
@@ -156,7 +157,7 @@ function Signin(props) {
       return <Redirect noThrow to={`/home`} />;
     }
 
-    if (createAccountVisible) {
+    if (!ut || createAccountVisible) {
       // return <CreateAccount key="createAccount" />;
       return CreateAccount(); // TODO: refactor to be able to reference as JSX
     } else {
