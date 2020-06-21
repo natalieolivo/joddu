@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Select from "react-select";
-import { Redirect, navigate } from "@reach/router";
+import { navigate } from "@reach/router";
+import useProfileCheck from "../hooks/use-profile-check";
 
 import Notification from "../components/Notification";
 import Error from "./ErrorNotification";
@@ -16,6 +17,7 @@ import config from "../config/index";
 import SecondaryHeader from "../styles/SecondaryHeader";
 
 const API_REGISTER_ENDPOINT = config.API_REGISTER_ENDPOINT || "";
+const API_SETTINGS_ENDPOINT = config.API_SETTINGS_ENDPOINT || "";
 const ut = localStorage.getItem("ut");
 const token = ut && JSON.parse(ut).token;
 
@@ -32,7 +34,6 @@ const specialtySelectOptions = [
   { value: "barber cuts", label: "Barber Cuts" },
   { value: "crochet", label: "Crochet" }
 ];
-const hasProfileConfirmedSetting = false;
 
 let postData = {};
 
@@ -62,8 +63,6 @@ function StylistRegister(props) {
   };
 
   const [stylist, setStylist] = useState([]);
-  const [activeProfile, setActiveProfile] = useState(false);
-  const [isSignedIn] = useState(typeof token === "string");
   const [notif, setNotification] = useState("");
 
   const errorDefaults = {
@@ -75,12 +74,6 @@ function StylistRegister(props) {
   };
 
   const [error, setError] = useState(errorDefaults);
-
-  useEffect(() => {
-    if (!isSignedIn) {
-      navigate(`/signin`);
-    }
-  }, [isSignedIn]);
 
   const handleFormSubmit = event => {
     event.preventDefault();
@@ -103,7 +96,17 @@ function StylistRegister(props) {
         setStylist(prevState => {
           return { ...prevState, ...result };
         });
-        setActiveProfile(true);
+        console.log("now feeettttchhh");
+        fetch(API_SETTINGS_ENDPOINT, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({ approved: false, _id: stylist._id })
+        });
+        // need to call settings endpoint here
+        //setActiveProfile(true);
       });
   };
 
@@ -172,10 +175,11 @@ function StylistRegister(props) {
       onChange={value => setStylistSelectData(value, { name: "specialty" })}
     />
   );
-  if (!hasProfileConfirmedSetting) {
-    return <h1>Thanks but your profile needs to be approved!</h1>;
-  } else if (activeProfile === true) {
-    return <Redirect noThrow to={`/stylists/profile/${stylist._id}`} />;
+
+  const isUserWithProfile = useProfileCheck(stylist._id);
+
+  if (isUserWithProfile) {
+    navigate(`/stylists/profile/${stylist._id}`);
   } else {
     return (
       <>

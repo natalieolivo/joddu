@@ -6,5 +6,6 @@ export const config = {
   AUTH_SIGNOUT_ENDPOINT: `http://localhost:${PORT}/api/signout`,
   API_REGISTER_ENDPOINT: `http://localhost:${PORT}/api/stylist`,
   API_STYLIST_ZIP_ENDPOINT: `http://localhost:${PORT}/api/stylist/zip`,
-  API_ARTIST_PROFILE_ENDPOINT: `http://localhost:${PORT}/api/stylist/`
+  API_ARTIST_PROFILE_ENDPOINT: `http://localhost:${PORT}/api/stylist/`,
+  API_SETTINGS_ENDPOINT: `http://localhost:${PORT}/api/settings/profile`
 };
