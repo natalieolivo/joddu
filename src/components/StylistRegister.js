@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Select from "react-select";
-import { navigate } from "@reach/router";
+import { Redirect } from "@reach/router";
 import useProfileCheck from "../hooks/use-profile-check";
 
 import Notification from "../components/Notification";
@@ -179,7 +179,7 @@ function StylistRegister(props) {
   const isUserWithProfile = useProfileCheck(stylist._id);
 
   if (isUserWithProfile) {
-    navigate(`/stylists/profile/${stylist._id}`);
+    return <Redirect noThrow to={`/stylists/profile/${stylist._id}`} />;
   } else {
     return (
       <>
