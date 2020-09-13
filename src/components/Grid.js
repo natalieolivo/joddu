@@ -3,7 +3,9 @@ import styled from "styled-components";
 import { Link } from "@reach/router";
 import placeholderImg from "../images/silouttemohawkbraid.png";
 import SecondaryHeader from "../styles/SecondaryHeader";
+import useApprovalCheck from "../hooks/use-approval-check";
 import config from "../config/index";
+const API_SETTINGS_ENDPOINT = config.API_SETTINGS_ENDPOINT || "";
 
 const ut = localStorage.getItem("ut");
 const token = ut && JSON.parse(ut).token;
@@ -63,35 +65,70 @@ const ProfileListInfo = styled.ul`
   padding: 0;
 `;
 
-// const [filters] = useState([
-//   {
-//     label: "braided",
-//     url: ""
-//   },
-//   {
-//     label: "natural",
-//     url: ""
-//   }
-// ]);
-
 function Grid(props) {
-  const [results, setSearchResults] = useState([]);
+  const useGetResultsByZip = () => {
+    const [approvedRes, setApprovedRes] = useState([]);
+    useEffect(() => {
+      if (props.zip) {
+        fetch(`${API_STYLIST_ZIP_ENDPOINT}/${props.zip}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          }
+        })
+          .then(response => response.json())
+          .then(results => {
+            console.log(`RESULTS`, results);
+            setApprovedRes(results);
+          });
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.zip]);
+
+    return approvedRes;
+  };
+  const results = useGetResultsByZip();
+  const [approvedResults, setApprovedResults] = useState([]);
 
   useEffect(() => {
-    if (props.zip) {
-      fetch(`${API_STYLIST_ZIP_ENDPOINT}/${props.zip}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then(response => response.json())
-        .then(json => {
-          console.log(json);
-          setSearchResults(json);
-        });
-    }
-  }, [props.zip]);
+    const allSettings = results.map(result => {
+      return new Promise((resolve, reject) => {
+        fetch(`${API_SETTINGS_ENDPOINT}/${result._id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+          .then(response => {
+            return response.json();
+          })
+          .then(setting => {
+            resolve(setting);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    });
+    //console.log(`all settings from settings api`, allSettings);
+    Promise.all(allSettings).then(settings => {
+      // console.log("all settings", settings);
+      // console.log(
+      //   "all settings filtered",
+      //   settings.filter(result => result.approved)
+      // );
+      // console.log(
+      //   `results filtered`,
+      //   results.filter(result => {
+      //     settings.includes(result._id);
+      //   })
+      // );
+      setApprovedResults(
+        results.filter(result =>
+          Object.values(settings[0]).includes(result._id)
+        )
+      );
+    });
+  }, [results]);
 
   //if (token) {
   return (
@@ -108,28 +145,30 @@ function Grid(props) {
         </GridFilter> */}
 
       <FlexGridStyle>
-        {results.map(({ firstName, lastName, _id, region, specialty }) => {
-          return (
-            <GridBlock>
-              <Link to={`/stylists/profile/${_id}`}>
-                <GridWrapper>
-                  <GridImg alt="" src={placeholderImg} />
+        {approvedResults.map(
+          ({ firstName, lastName, _id, region, specialty }) => {
+            return (
+              <GridBlock>
+                <Link to={`/stylists/profile/${_id}`}>
+                  <GridWrapper>
+                    <GridImg alt="" src={placeholderImg} />
 
-                  <span>{firstName}</span>
-                  <span>{lastName}</span>
-                  <ProfileListInfo>
-                    {region.map(({ label }) => {
-                      return <li>{label}</li>;
-                    })}
-                    {specialty.map(({ label }) => {
-                      return <li>{label}</li>;
-                    })}
-                  </ProfileListInfo>
-                </GridWrapper>
-              </Link>
-            </GridBlock>
-          );
-        })}
+                    <span>{firstName}</span>
+                    <span>{lastName}</span>
+                    <ProfileListInfo>
+                      {region.map(({ label }) => {
+                        return <li>{label}</li>;
+                      })}
+                      {specialty.map(({ label }) => {
+                        return <li>{label}</li>;
+                      })}
+                    </ProfileListInfo>
+                  </GridWrapper>
+                </Link>
+              </GridBlock>
+            );
+          }
+        )}
       </FlexGridStyle>
     </>
   );

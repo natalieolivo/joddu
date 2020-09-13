@@ -77,7 +77,7 @@ function StylistRegister(props) {
 
   const handleFormSubmit = event => {
     event.preventDefault();
-
+    console.log(`handle form submit`);
     if (hasErrors(error)) {
       setNotification("Please correct the errors first.");
       return;
@@ -96,14 +96,14 @@ function StylistRegister(props) {
         setStylist(prevState => {
           return { ...prevState, ...result };
         });
-        console.log("now feeettttchhh");
+        console.log("now feeettttchhh", result);
         fetch(API_SETTINGS_ENDPOINT, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
           },
-          body: JSON.stringify({ approved: false, _id: stylist._id })
+          body: JSON.stringify({ approved: false, _id: result._id })
         });
         // need to call settings endpoint here
         //setActiveProfile(true);

@@ -9,7 +9,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
 const API_ARTIST_PROFILE_ENDPOINT = config.API_ARTIST_PROFILE_ENDPOINT || "";
-const hasProfileConfirmedSetting = false;
+const API_SETTINGS_ENDPOINT = config.API_SETTINGS_ENDPOINT || "";
 
 const ut = localStorage.getItem("ut");
 const token = ut && JSON.parse(ut).token;
@@ -38,12 +38,15 @@ const BoxStyle = styled.div`
 const StylistProfile = props => {
   const [data, setData] = useState([]);
   const [date, setDate] = useState(new Date());
+  const [hasProfileConfirmedSetting, setHasProfileConfirmedSetting] = useState(
+    false
+  );
   const onChange = date => {
     setDate(date);
   };
 
   useEffect(() => {
-    fetch(`${API_ARTIST_PROFILE_ENDPOINT}/${props.profileId}`, {
+    fetch(`${API_SETTINGS_ENDPOINT}/${props.profileId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -52,31 +55,47 @@ const StylistProfile = props => {
         return response.json();
       })
       .then(result => {
-        let transformedData = [
-          {
-            label: "First Name",
-            value: result.firstName
-          },
-          {
-            label: "Last Name",
-            value: result.lastName
-          },
-          {
-            label: "Zip",
-            value: result.zip
-          },
-          {
-            label: "Region",
-            value: result.region
-          },
-          {
-            label: "Available Areas",
-            value: result.specialty
-          }
-        ];
-        setData(transformedData);
-        console.log(data);
+        setHasProfileConfirmedSetting(result.approved);
+      })
+      .catch(error => {
+        console.error(error);
       });
+
+    hasProfileConfirmedSetting &&
+      fetch(`${API_ARTIST_PROFILE_ENDPOINT}/${props.profileId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(response => {
+          return response.json();
+        })
+        .then(result => {
+          let transformedData = [
+            {
+              label: "First Name",
+              value: result.firstName
+            },
+            {
+              label: "Last Name",
+              value: result.lastName
+            },
+            {
+              label: "Zip",
+              value: result.zip
+            },
+            {
+              label: "Region",
+              value: result.region
+            },
+            {
+              label: "Available Areas",
+              value: result.specialty
+            }
+          ];
+          setData(transformedData);
+          console.log(data);
+        });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
